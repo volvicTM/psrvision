@@ -12,10 +12,8 @@ apt purge -y $(dpkg -l | awk '/^rc/ { print $2 }') > /dev/null
 # Adduser
 echo -n "Please Enter a Username: "
 read uname
-
 randompw=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
-
-useradd -d /home/"$uname" -m -g plex -s /bin/bash "$uname"
+useradd -d /home/"$uname" -m -g sudo -s /bin/bash "$uname"
 echo $uname:$randompw | chpasswd
 
 # Enter SSH Key
@@ -36,7 +34,6 @@ sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd
 sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
 systemctl restart sshd
 systemctl restart ssh
-
 
 # Secure fstab
 echo 'tmpfs /run/shm tmpfs defaults,noexec,nosuid 0 0' >> /etc/fstab
@@ -96,4 +93,3 @@ echo
 echo "Leave this ssh session open and start a new one with the username you just created! If you are able to connect reboot the server"
 
 exit
-
