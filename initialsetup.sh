@@ -2,12 +2,11 @@
 
 # Update Ubuntu
 Echo "Updating Ubuntu..."
-apt update > /dev/null
-apt -y upgrade > /dev/null
-apt -y dist-upgrade > /dev/null
-echo "Cleaning up after update..
-apt -y autoremove > /dev/null
-apt clean > /dev/null
+apt-get update
+apt-get -y upgrade
+apt -y dist-upgrade
+apt -y autoremove
+apt clean
 apt purge -y $(dpkg -l | awk '/^rc/ { print $2 }') > /dev/null
 
 # Adduser
