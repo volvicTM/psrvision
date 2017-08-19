@@ -88,6 +88,9 @@ unionfs-fuse -o cow,allow_other /home//Radarr/local=RW:/home//Radarr/gdrive=RO /
 exit
 EOM
 
+# Make Scripts executable
+chmod +x /home/$USER/Scripts/*.sh
+
 # Install necessary Applications
 sudo apt-get update
 # Unzip
