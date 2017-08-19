@@ -14,7 +14,7 @@ read uname
 
 randompw=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
 
-useradd -d /home/"$uname" -m -g users -s /bin/bash "$uname"
+useradd -d /home/"$uname" -m -g plex -s /bin/bash "$uname"
 echo $uname:$randompw | chpasswd
 
 # Enter SSH Key
