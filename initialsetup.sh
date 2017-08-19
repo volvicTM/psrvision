@@ -29,10 +29,10 @@ chmod 700 /home/$uname/.ssh
 chmod 600 /home/$uname/.ssh/authorized_keys
 
 #Secure SSH Login
-sed -i 's/^#?Port .*/Port 2245/' /etc/ssh/sshd_config
-sed -i 's/^#?PermitRootLogin .*/PermitRootLogin no/g' /etc/ssh/sshd_config
-sed -i 's/^#?PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
-sed -i 's/^#?UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
+sed -i 's/Port 22/Port 2245/' /etc/ssh/sshd_config
+sed -i 's/PermitRootLogin .*/PermitRootLogin no/g' /etc/ssh/sshd_config
+sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
+sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
 systemctl restart sshd
 systemctl restart ssh
 
