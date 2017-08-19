@@ -14,7 +14,7 @@ read uname
 
 randompw=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
 
-adduser $uname --disabled-password
+adduser $uname --disabled-password --gecos
 echo $uname:$randompw | chpasswd
 
 # Enter SSH Key
