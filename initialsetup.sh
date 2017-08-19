@@ -1,12 +1,18 @@
 #!/bin/bash
 
 # Update Ubuntu
+Echo "Updating Ubuntu..."
+{
 apt update
 apt -y upgrade
 apt -y dist-upgrade
+} &> /dev/null
+echo "Cleaning up after update..
+{
 apt -y autoremove
 apt clean
 apt purge -y $(dpkg -l | awk '/^rc/ { print $2 }')
+} &> /dev/null
 
 # Adduser
 echo -n "Please Enter a Username: "
