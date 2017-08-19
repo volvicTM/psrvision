@@ -22,8 +22,8 @@ echo "Please Generate a SSH Key with puttygen"
 echo -n "Paste the PUBLIC SSH key here: "
 read pubkey
 echo $pubkey >> /home/$uname/.ssh/authorized_keys
-chown $uname:$uname -R /home/$uname/.ssh
-chown $uname:$uname -R /home/$uname/.ssh/authorized_keys
+chown $uname:sudo -R /home/$uname/.ssh
+chown $uname:sudo -R /home/$uname/.ssh/authorized_keys
 chmod 700 /home/$uname/.ssh
 chmod 600 /home/$uname/.ssh/authorized_keys
 
