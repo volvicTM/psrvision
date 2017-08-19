@@ -1,15 +1,32 @@
 #!/bin/bash
+# Make required directories
 mkdir /home/$USER/Downloads
+mkdir /home/$USER/Scripts
+mkdir /home/$USER/Scripts/logs
+mkdir /home/$USER/Plex
+mkdir /home/$USER/Plex/Media
+mkdir /home/$USER/Sonarr
+mkdir /home/$USER/Sonarr/local
+mkdir /home/$USER/Sonarr/gdrive
+mkdir /home/$USER/Sonarr/Media
+mkdir /home/$USER/Radarr
+mkdir /home/$USER/Radarr/local
+mkdir /home/$USER/Radarr/gdrive
+mkdir /home/$USER/Radarr/Media
+mkdir /home/$USER/Nzbget
+mkdir /home/$USER/Nzbget/Downloads
+mkdir /home/$USER/Nzbhydra
+
 # Install necessary Applications
 sudo apt-get update
 # Unzip
-sudo apt-get unzip
+sudo apt-get -y install unzip
 # Fuse
 sudo apt-get -y install fuse
 # Unionfs
 sudo apt-get -y install unionfs-fuse
 # Docker
-sudo apt-get install \
+sudo apt-get -y install \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -20,12 +37,14 @@ sudo add-apt-repository \
    $(lsb_release -cs) \
    stable"
 sudo apt-get update
-sudo apt-get install docker-ce
+sudo apt-get -y install docker-ce
 # Rclone
 wget https://downloads.rclone.org/rclone-current-linux-amd64.zip -P /home/$USER/Downloads
-unzip /home/$USER/Downloads/rclone*.zip
+unzip /home/$USER/Downloads/rclone*.zip -d /home/$USER/Downloads/
 sudo cp /home/$USER/Downloads/rclone*/rclone /usr/bin
 sudo chown root:root /usr/bin/rclone
 sudo chmod 755 /usr/bin/rclone
 echo "finished installing"
+rclone config
+echo "q"
 exit
