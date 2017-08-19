@@ -80,7 +80,12 @@ EOT
 # Prevent IP Spoofing
 sed -i 's/order hosts,bind/order bind,hosts/' /etc/host.conf
 sed -i 's/multi on/nospoof on/' /etc/host.conf
-
+echo
+echo
+echo
+echo
+echo
+echo
 echo
 echo "*Please record your username and password. (You may change the password at any time!)*"
 echo
@@ -90,6 +95,8 @@ echo "*** Password: " $randompw
 echo "*** SSH Port: 2245"
 echo "****************************"
 echo
-echo "Leave this ssh session open and start a new one with the username you just created! If you are able to connect reboot the server"
-
+echo "Reboot the server before continuing." 
+echo 
+echo
+echo
 exit
