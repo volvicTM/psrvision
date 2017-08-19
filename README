@@ -1,0 +1,27 @@
+################################################################
+# Setup a Media Server to stream from a cloud service provider #
+################################################################
+
+############
+# The Plan #
+############
+#
+# Stream Media to Plex (or Ombi) from a Cloud Service Provider, such as Google Drive. 
+# Media organised via Sonarr, Radarr and Sabnzbd Dockers.
+# Rclone to Upload Media to Cloud Service Provider.
+# Rclone will be used for mounts, and tpslimit flag to prevent api bans.
+# Encrypt Media via Rclone Crypt.
+#
+# Usenet ------> Sabnzbd ------> Sonarr/Radarr ------> Rclone Crypt ------> Google Drive
+# Google Drive -------> Rclone ------> Plex Playback
+# Google Drive -------> Rclone ------> Sonnar Library Scanning
+# Google Drive -------> Rclone ------> Radarr Library Scanning
+# 
+# 
+
+
+################
+# Requirements #
+################
+# Computer, VPS or Dedicated Server with Ubuntu 16.04 (Distribution Kernal).
+# Cloud Storage Provider, such as Google Drive, Hubic, ACD (being disbanded) etc
