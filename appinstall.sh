@@ -194,7 +194,7 @@ linuxserver/sonarr
 
 # Radarr
 docker create \
---name=radarr \
+--name radarr \
 -v /home/plex/Radarr:/config \
 -v /home/plex/NzbGet:/downloads \
 -v /home/plex/Radarr:/movies \
@@ -216,15 +216,18 @@ docker create \
 -e TZ=Europe/London \
 -v /home/plex/NzbGet:/config \
 -v /home/plex/NzbGet:/downloads \
+-v /etc/localtime:/etc/localtime:ro \
 -e VIRTUAL_HOST=nzbget.thisnotbereal.info \
 -e LETSENCRYPT_HOST=nzbget.thisnotbereal.info \
--e LETSENCRYPT_EMAIL="$leemail" \
+-e LETSENCRYPT_EMAIL=volvictm@protonmail.com \
 linuxserver/nzbget
 
 # NzbHydra
-docker create --name=hydra \
+docker create 
+--name hydra \
 -v /home/plex/NzbHydra:/config \
 -v /home/plex/NzbGet:/downloads \
+-v /etc/localtime:/etc/localtime:ro \
 -e PGID=1000 -e PUID=1000 \
 -e TZ=Europe/London \
 -p 5075:5075 \
