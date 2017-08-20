@@ -185,7 +185,7 @@ docker create \
 -v /etc/localtime:/etc/localtime:ro \
 -v /home/plex/Sonarr:/config \
 -v /home/plex/Sonarr:/tv \
--v /home/plex/NzbGet:/downloads \
+-v /home/plex/Nzbget:/downloads \
 -v /usr/bin/rclone:/rclone \
 -e VIRTUAL_HOST=sonarr.thisnotbereal.info \
 -e LETSENCRYPT_HOST=sonarr.thisnotbereal.info \
@@ -196,7 +196,7 @@ linuxserver/sonarr
 docker create \
 --name radarr \
 -v /home/plex/Radarr:/config \
--v /home/plex/NzbGet:/downloads \
+-v /home/plex/Nzbget:/downloads \
 -v /home/plex/Radarr:/movies \
 -v /usr/bin/rclone:/rclone \
 -v /etc/localtime:/etc/localtime:ro \
@@ -214,8 +214,8 @@ docker create \
 -p 6789:6789 \
 -e PUID=1000 -e PGID=1000 \
 -e TZ=Europe/London \
--v /home/plex/NzbGet:/config \
--v /home/plex/NzbGet:/downloads \
+-v /home/plex/Nzbget:/config \
+-v /home/plex/Nzbget:/downloads \
 -v /etc/localtime:/etc/localtime:ro \
 -e VIRTUAL_HOST=nzbget.thisnotbereal.info \
 -e LETSENCRYPT_HOST=nzbget.thisnotbereal.info \
@@ -226,7 +226,7 @@ linuxserver/nzbget
 docker create 
 --name hydra \
 -v /home/plex/NzbHydra:/config \
--v /home/plex/NzbGet:/downloads \
+-v /home/plex/Nzbget:/downloads \
 -v /etc/localtime:/etc/localtime:ro \
 -e PGID=1000 -e PUID=1000 \
 -e TZ=Europe/London \
