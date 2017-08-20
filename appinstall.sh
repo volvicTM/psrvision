@@ -212,8 +212,51 @@ docker create \
 -v /home/plex/Sonarr:/tv \
 -v /home/plex/NzbGet:/downloads \
 -v /usr/bin/rclone:/rclone \
--e VIRTUAL_HOST=sonarr.thisnotbereal.info \
--e LETSENCRYPT_HOST=sonarr.thisnotbereal.info \
--e LETSENCRYPT_EMAIL=volvictm@protonmail.com \
+-e VIRTUAL_HOST=sonarr.$durl \
+-e LETSENCRYPT_HOST=sonarr.$durl \
+-e LETSENCRYPT_EMAIL=$leemail \
 linuxserver/sonarr
+
+# Radarr
+docker create \
+--name=radarr \
+-v /home/plex/Radarr:/config \
+-v /home/plex/NzbGet:/downloads \
+-v /home/plex/Radarr:/movies \
+-v /usr/bin/rclone:/rclone \
+-v /etc/localtime:/etc/localtime:ro \
+-e TZ=Europe/London \
+-e PGID=1000 -e PUID=1000  \
+-e VIRTUAL_HOST=radarr.$durl \
+-e LETSENCRYPT_HOST=radarr.$durl \
+-e LETSENCRYPT_EMAIL=$leemail \
+-p 7878:7878 \
+linuxserver/radarr
+
+# Nzbget
+docker create \
+--name nzbget \
+-p 6789:6789 \
+-e PUID=1000 -e PGID=1000 \
+-e TZ=Europe/London \
+-v /home/plex/NzbGet:/config \
+-v /home/plex/NzbGet:/downloads \
+-e VIRTUAL_HOST=nzbget.$durl \
+-e LETSENCRYPT_HOST=nzbget.$durl \
+-e LETSENCRYPT_EMAIL=$leemail \
+linuxserver/nzbget
+
+# NzbHydra
+docker create --name=hydra \
+-v /home/plex/NzbHydra:/config \
+-v /home/plex/NzbGet:/downloads \
+-e PGID=1000 -e PUID=1000 \
+-e TZ=Europe/London \
+-p 5075:5075 \
+-e VIRTUAL_HOST=nzbhydra.$durl \
+-e LETSENCRYPT_HOST=nzbhydra.$durl \
+-e LETSENCRYPT_EMAIL=$leemail \
+linuxserver/hydra
+
+
 exit
