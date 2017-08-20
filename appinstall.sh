@@ -18,13 +18,15 @@ mkdir /home/$USER/Nzbget
 mkdir /home/$USER/Nzbget/Downloads
 mkdir /home/$USER/Nzbhydra
 mkdir /home/$USER/sslcerts
+mkdir /home/$USER/.config
+mkdir /home/$USER/.config/rclone
 
 # Add rclone scripts
 # Plex
 /bin/cat <<EOM >/home/$USER/Scripts/plexmount.sh
 #! /bin/bash
 #Unmount
-/bin/fusermount -uz /home//Plex/Media
+/bin/fusermount -uz /home/$UPATH/Plex/Media
 
 #Mount
 /usr/bin/rclone mount \
@@ -34,19 +36,20 @@ mkdir /home/$USER/sslcerts
 --stats 1s \
 --quiet \
 --buffer-size 512M \
---log-file=/home//Scripts/logs/plexmount.log \
-Plex_Crypt: /home//Plex/Media &
+--log-file=/home/$UPATH/Scripts/logs/plexmount.log \
+Plex_Crypt: /home/$UPATH/Plex/Media &
 exit
 EOM
+sed -i '2s/^/UPATH=$USER\n/' /home/$USER/Scripts/plexmount.sh
 
 # Sonarr
 /bin/cat <<EOM >/home/$USER/Scripts/sonarrmount.sh
 #! /bin/bash
 
 #Unmount
-/bin/fusermount -uz /home//Sonarr/Media
-/bin/fusermount -uz /home//Sonarr/gdrive
-/bin/fusermount -uz /home//Sonarr/local
+/bin/fusermount -uz /home/&UPATH/Sonarr/Media
+/bin/fusermount -uz /home/&UPATH/Sonarr/gdrive
+/bin/fusermount -uz /home/&UPATH/Sonarr/local
 
 #Mount
 /usr/bin/rclone mount \
@@ -55,23 +58,24 @@ EOM
 --stats 1s \
 --quiet \
 --buffer-size 512M \
---log-file=/home//Scripts/logs/sonarrmount.log \
-Sonarr_Crypt: /home//Sonarr/gdrive &
+--log-file=/home/&UPATH/Scripts/logs/sonarrmount.log \
+Sonarr_Crypt: /home/&UPATH/Sonarr/gdrive &
 
 #UnionFuse Local and gdrive into Media
-unionfs-fuse -o cow,allow_other /home//Sonarr/local=RW:/home//Sonarr/gdrive=RO /home//Sonarr/Media/
+unionfs-fuse -o cow,allow_other /home/&UPATH/Sonarr/local=RW:/home/&UPATH/Sonarr/gdrive=RO /home/&UPATH/Sonarr/Media/
 
 exit
 EOM
+sed -i '2s/^/UPATH=$USER\n/' /home/$USER/Scripts/sonarrmount.sh
 
 # Radarr
 /bin/cat <<EOM >/home/$USER/Scripts/radarrmount.sh
 #! /bin/bash
 
 #Unmount
-/bin/fusermount -uz /home//Radarr/gdrive
-/bin/fusermount -uz /home//Radarr/local
-/bin/fusermount -uz /home//Radarr/Media
+/bin/fusermount -uz /home/&UPATH/Radarr/gdrive
+/bin/fusermount -uz /home/&UPATH/Radarr/local
+/bin/fusermount -uz /home/&UPATH/Radarr/Media
 
 #Mount
 /usr/bin/rclone mount \
@@ -80,14 +84,15 @@ EOM
 --stats 1s \
 --quiet \
 --buffer-size 512M \
---log-file=/home//Scripts/logs/radarrmount.log \
-Radarr_Crypt: /home//Radarr/gdrive &
+--log-file=/home/&UPATH/Scripts/logs/radarrmount.log \
+Radarr_Crypt: /home/&UPATH/Radarr/gdrive &
 
 #UnionFuse Local and gdrive into Media
-unionfs-fuse -o cow,allow_other /home//Radarr/local=RW:/home//Radarr/gdrive=RO /home//Radarr/Media/
+unionfs-fuse -o cow,allow_other /home/&UPATH/Radarr/local=RW:/home/&UPATH/Radarr/gdrive=RO /home/&UPATH/Radarr/Media/
 
 exit
 EOM
+sed -i '2s/^/UPATH=$USER\n/' /home/$USER/Scripts/radarrmount.sh
 
 # Make Scripts executable
 chmod +x /home/$USER/Scripts/*.sh
@@ -121,6 +126,8 @@ sudo cp /home/$USER/Downloads/rclone*/rclone /usr/bin
 sudo chown root:root /usr/bin/rclone
 sudo chmod 755 /usr/bin/rclone
 rm -rf /home/$USER/Downloads/rclone*
+touch /home/$USER/.config/rclone/rclone.conf
+
 echo "finished installing apps"
 echo "Setting up Docker Containers"
 
@@ -182,4 +189,31 @@ docker run \
 -v /home/$USER/Plex:/transcode \
 -v /home/$USER/Plex:/data \
 plexinc/pms-docker
+
+# Portainer
+docker run \
+-d \
+-p 9000:9000 \
+-v /var/run/docker.sock:/var/run/docker.sock \
+-e PGID=1000 -e PUID=1000 \
+-e VIRTUAL_HOST=portainer.$durl \
+-e LETSENCRYPT_HOST=portainer.$durl \
+-e LETSENCRYPT_EMAIL=$leemail \
+portainer/portainer
+
+# Sonarr
+docker create \
+--name sonarr \
+-p 8989:8989 \
+-e PUID=1000 -e PGID=1000 \
+-e TZ=Europe/London \
+-v /etc/localtime:/etc/localtime:ro \
+-v /home/plex/Sonarr:/config \
+-v /home/plex/Sonarr:/tv \
+-v /home/plex/NzbGet:/downloads \
+-v /usr/bin/rclone:/rclone \
+-e VIRTUAL_HOST=sonarr.thisnotbereal.info \
+-e LETSENCRYPT_HOST=sonarr.thisnotbereal.info \
+-e LETSENCRYPT_EMAIL=volvictm@protonmail.com \
+linuxserver/sonarr
 exit
