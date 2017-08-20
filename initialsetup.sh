@@ -35,6 +35,10 @@ sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
 systemctl restart sshd
 systemctl restart ssh
 
+# adduser to docker group
+sudo groupadd docker
+sudo usermod -aG docker $uname
+
 # Secure fstab
 echo 'tmpfs /run/shm tmpfs defaults,noexec,nosuid 0 0' >> /etc/fstab
 
