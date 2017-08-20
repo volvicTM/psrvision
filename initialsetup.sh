@@ -36,8 +36,8 @@ systemctl restart sshd
 systemctl restart ssh
 
 # adduser to docker group
-sudo groupadd docker
-sudo usermod -aG docker $uname
+groupadd docker
+usermod -aG docker $uname
 
 # Secure fstab
 echo 'tmpfs /run/shm tmpfs defaults,noexec,nosuid 0 0' >> /etc/fstab
