@@ -125,13 +125,10 @@ echo "finished installing apps"
 echo "Setting up Docker Containers"
 
 # Add and run Dockers
-sudo groupadd docker
-sudo usermod -aG docker $USER
 sudo systemctl enable docker
 
 # Get Plex Claim Code
-read -p "Please go to plex.tv/claim login and copy the code. Press [Enter] to continue..."
-echo -n "Paste the code in: " 
+echo -n "Please go to plex.tv/claim and copy and paste the code here: "
 read pclaim
 
 # Obtain Email Address for Lets Encrypt
