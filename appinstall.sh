@@ -132,4 +132,133 @@ rm -rf /home/$USER/Downloads/rclone*
 touch /home/$USER/.config/rclone/rclone.conf
 echo "- Complete"
 
+echo "Setting up Docker Containers"
+# Add and run Dockers
+sudo systemctl enable docker
+
+# Get Plex Claim Code
+echo -n "Please go to plex.tv/claim and copy and paste the code here: "
+read pclaim
+
+# Obtain Email Address for Lets Encrypt
+echo -n "Enter an email address for Let's Encrypt renewals: "
+read leemail
+
+# Obtain Domain
+echo -n "Please enter your domain address, e.g. thisdomain.com: "
+read durl
+
+# nginx-proxy docker
+docker run -d -p 80:80 -p 443:443 \
+--name nginx-proxy \
+-v /home/plex/sslcerts:/etc/nginx/certs:ro \
+-v /etc/nginx/vhost.d \
+-v /usr/share/nginx/html \
+-v /var/run/docker.sock:/tmp/docker.sock:ro \
+--label com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy \
+jwilder/nginx-proxy
+
+# Let's Encrypt
+docker run -d \
+-v /home/plex/sslcerts:/etc/nginx/certs:rw \
+-v /var/run/docker.sock:/var/run/docker.sock:ro \
+--volumes-from nginx-proxy \
+jrcs/letsencrypt-nginx-proxy-companion
+
+# Plex
+docker run \
+-d \
+--name plex \
+--network=host \
+-e TZ="Europe/London" \
+-e PLEX_CLAIM="$pclaim" \
+-e VIRTUAL_HOST=plex."$durl" \
+-e LETSENCRYPT_HOST=plex."$durl" \
+-e LETSENCRYPT_EMAIL="$leemail" \
+-p 32400:32400/tcp \
+-p 3005:3005/tcp \
+-p 8324:8324/tcp \
+-p 32469:32469/tcp \
+-p 1900:1900/udp \
+-p 32410:32410/udp \
+-p 32412:32412/udp \
+-p 32413:32413/udp \
+-p 32414:32414/udp \
+-e PLEX_UID="1000" \
+-e PLEX_GID="1000" \
+-v /home/plex/Plex:/config \
+-v /home/plex/Plex:/transcode \
+-v /home/plex/Plex:/data \
+plexinc/pms-docker
+
+# Portainer
+docker run \
+-d \
+-p 9000:9000 \
+-v /var/run/docker.sock:/var/run/docker.sock \
+-e PGID=1000 -e PUID=1000 \
+-e VIRTUAL_HOST=portainer."$durl" \
+-e LETSENCRYPT_HOST=portainer."$durl" \
+-e LETSENCRYPT_EMAIL="$leemail" \
+portainer/portainer
+
+# Sonarr
+docker create \
+--name sonarr \
+-p 8989:8989 \
+-e PUID=1000 -e PGID=1000 \
+-e TZ=Europe/London \
+-v /etc/localtime:/etc/localtime:ro \
+-v /home/plex/Sonarr:/config \
+-v /home/plex/Sonarr:/tv \
+-v /home/plex/NzbGet:/downloads \
+-v /usr/bin/rclone:/rclone \
+-e VIRTUAL_HOST=sonarr."$durl" \
+-e LETSENCRYPT_HOST=sonarr."$durl" \
+-e LETSENCRYPT_EMAIL="$leemail" \
+linuxserver/sonarr
+
+# Radarr
+docker create \
+--name=radarr \
+-v /home/plex/Radarr:/config \
+-v /home/plex/NzbGet:/downloads \
+-v /home/plex/Radarr:/movies \
+-v /usr/bin/rclone:/rclone \
+-v /etc/localtime:/etc/localtime:ro \
+-e TZ=Europe/London \
+-e PGID=1000 -e PUID=1000  \
+-e VIRTUAL_HOST=radarr."$durl" \
+-e LETSENCRYPT_HOST=radarr."$durl" \
+-e LETSENCRYPT_EMAIL="$leemail" \
+-p 7878:7878 \
+linuxserver/radarr
+
+# Nzbget
+docker create \
+--name nzbget \
+-p 6789:6789 \
+-e PUID=1000 -e PGID=1000 \
+-e TZ=Europe/London \
+-v /home/plex/NzbGet:/config \
+-v /home/plex/NzbGet:/downloads \
+-e VIRTUAL_HOST=nzbget."$durl" \
+-e LETSENCRYPT_HOST=nzbget."$durl" \
+-e LETSENCRYPT_EMAIL="$leemail" \
+linuxserver/nzbget
+
+# NzbHydra
+docker create --name=hydra \
+-v /home/plex/NzbHydra:/config \
+-v /home/plex/NzbGet:/downloads \
+-e PGID=1000 -e PUID=1000 \
+-e TZ=Europe/London \
+-p 5075:5075 \
+-e VIRTUAL_HOST=nzbhydra."$durl" \
+-e LETSENCRYPT_HOST=nzbhydra."$durl" \
+-e LETSENCRYPT_EMAIL="$leemail" \
+linuxserver/hydra
+echo "- Complete"
+echo "Installation Complete"
+
 exit
