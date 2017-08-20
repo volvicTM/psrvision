@@ -1,6 +1,7 @@
 #!/bin/bash
 uname=$USER
 # Make required directories
+echo "Creating Directories"
 mkdir /home/$USER/Downloads
 mkdir /home/$USER/Scripts
 mkdir /home/$USER/Scripts/logs
@@ -20,7 +21,9 @@ mkdir /home/$USER/Nzbhydra
 mkdir /home/$USER/sslcerts
 mkdir /home/$USER/.config
 mkdir /home/$USER/.config/rclone
+echo "- Complete"
 
+echo "Creating Scripts"
 # Add rclone scripts
 # Plex
 /bin/cat <<EOM >/home/$USER/Scripts/plexmount.sh
@@ -96,7 +99,8 @@ sed -i '2s/^/UPATH="$USER"\n/' /home/$USER/Scripts/radarrmount.sh
 
 # Make Scripts executable
 chmod +x /home/$USER/Scripts/*.sh
-
+echo "- Complete"
+echo "Installing Apps"
 # Install necessary Applications
 sudo apt-get -y update > /dev/null
 # Unzip
@@ -127,10 +131,9 @@ sudo chown root:root /usr/bin/rclone
 sudo chmod 755 /usr/bin/rclone
 rm -rf /home/$USER/Downloads/rclone*
 touch /home/$USER/.config/rclone/rclone.conf
+echo "- Complete"
 
-echo "finished installing apps"
 echo "Setting up Docker Containers"
-
 # Add and run Dockers
 sudo systemctl enable docker
 
@@ -257,6 +260,7 @@ docker create --name=hydra \
 -e LETSENCRYPT_HOST=nzbhydra."$durl" \
 -e LETSENCRYPT_EMAIL="$leemail" \
 linuxserver/hydra
-
+echo "- Complete"
+echo "Installation Complete"
 
 exit
