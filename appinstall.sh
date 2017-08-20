@@ -93,27 +93,27 @@ EOM
 chmod +x /home/$USER/Scripts/*.sh
 
 # Install necessary Applications
-sudo apt-get update
+sudo apt-get -y update > /dev/null
 # Unzip
-sudo apt-get -y install unzip
+sudo apt-get -y install unzip > /dev/null
 # Fuse
-sudo apt-get -y install fuse
+sudo apt-get -y install fuse > /dev/null
 # Unionfs
-sudo apt-get -y install unionfs-fuse
-sed -i 's/#user_allow_other/user_allow_other/g' /etc/fuse.conf
+sudo apt-get -y install unionfs-fuse > /dev/null
+sudo sed -i 's/#user_allow_other/user_allow_other/g' /etc/fuse.conf
 # Docker
 sudo apt-get -y install \
     apt-transport-https \
     ca-certificates \
     curl \
-    software-properties-common
+    software-properties-common > /dev/null
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository \
    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
    $(lsb_release -cs) \
    stable"
-sudo apt-get update
-sudo apt-get -y install docker-ce
+sudo apt-get -y update > /dev/null
+sudo apt-get -y install docker-ce > /dev/null
 # Rclone
 wget https://downloads.rclone.org/rclone-current-linux-amd64.zip -P /home/$USER/Downloads
 unzip /home/$USER/Downloads/rclone*.zip -d /home/$USER/Downloads/
