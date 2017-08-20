@@ -2,12 +2,13 @@
 
 # Update Ubuntu
 echo "Updating Ubuntu..."
-apt-get update
-apt-get -y upgrade
-apt -y dist-upgrade
-apt -y autoremove
-apt clean
-apt purge -y $(dpkg -l | awk '/^rc/ { print $2 }') > /dev/null
+apt-get update > /dev/null
+apt-get -y upgrade > /dev/null
+apt-get -y dist-upgrade > /dev/null
+echo "Cleaning Ubuntu..."
+apt-get -y autoremove > /dev/null
+apt-get clean > /dev/null
+apt-get purge -y $(dpkg -l | awk '/^rc/ { print $2 }')
 
 # Adduser
 echo -n "Please Enter a Username: "
@@ -103,7 +104,7 @@ echo "Reboot the server before continuing."
 echo 
 echo
 echo "Moving files to new user"
-cp -vr /root/psrvision /home/$uname/psrvision
+cp -r /root/psrvision /home/$uname/psrvision
 chown -R $uname:sudo /home/$uname/psrvision
 chown -R $uname:sudo /home/$uname/psrvision/*
 chmod +x /home/$uname/psrvision/appinstall.sh
