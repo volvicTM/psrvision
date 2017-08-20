@@ -40,7 +40,7 @@ mkdir /home/$USER/.config/rclone
 Plex_Crypt: /home/$UPATH/Plex/Media &
 exit
 EOM
-sed -i '2s/^/UPATH=$USER\n/' /home/$USER/Scripts/plexmount.sh
+sed -i '2s/^/UPATH="$USER"\n/' /home/$USER/Scripts/plexmount.sh
 
 # Sonarr
 /bin/cat <<EOM >/home/$USER/Scripts/sonarrmount.sh
@@ -66,7 +66,7 @@ unionfs-fuse -o cow,allow_other /home/&UPATH/Sonarr/local=RW:/home/&UPATH/Sonarr
 
 exit
 EOM
-sed -i '2s/^/UPATH=$USER\n/' /home/$USER/Scripts/sonarrmount.sh
+sed -i '2s/^/UPATH="$USER"\n/' /home/$USER/Scripts/sonarrmount.sh
 
 # Radarr
 /bin/cat <<EOM >/home/$USER/Scripts/radarrmount.sh
@@ -92,7 +92,7 @@ unionfs-fuse -o cow,allow_other /home/&UPATH/Radarr/local=RW:/home/&UPATH/Radarr
 
 exit
 EOM
-sed -i '2s/^/UPATH=$USER\n/' /home/$USER/Scripts/radarrmount.sh
+sed -i '2s/^/UPATH="$USER"\n/' /home/$USER/Scripts/radarrmount.sh
 
 # Make Scripts executable
 chmod +x /home/$USER/Scripts/*.sh
@@ -149,7 +149,7 @@ read durl
 # nginx-proxy docker
 docker run -d -p 80:80 -p 443:443 \
 --name nginx-proxy \
--v /home/$USER/sslcerts:/etc/nginx/certs:ro \
+-v /home/"$USER"/sslcerts:/etc/nginx/certs:ro \
 -v /etc/nginx/vhost.d \
 -v /usr/share/nginx/html \
 -v /var/run/docker.sock:/tmp/docker.sock:ro \
@@ -159,7 +159,7 @@ jwilder/nginx-proxy
 
 # Let's Encrypt
 docker run -d \
--v /home/$USER/sslcerts:/etc/nginx/certs:rw \
+-v /home/"$USER"/sslcerts:/etc/nginx/certs:rw \
 -v /var/run/docker.sock:/var/run/docker.sock:ro \
 --volumes-from nginx-proxy \
 jrcs/letsencrypt-nginx-proxy-companion
@@ -171,9 +171,9 @@ docker run \
 --network=host \
 -e TZ="Europe/London" \
 -e PLEX_CLAIM="$pclaim" \
--e VIRTUAL_HOST=plex.$durl \
--e LETSENCRYPT_HOST=plex.$durl \
--e LETSENCRYPT_EMAIL=$leemail \
+-e VIRTUAL_HOST=plex."$durl" \
+-e LETSENCRYPT_HOST=plex."$durl" \
+-e LETSENCRYPT_EMAIL="$leemail" \
 -p 32400:32400/tcp \
 -p 3005:3005/tcp \
 -p 8324:8324/tcp \
@@ -196,9 +196,9 @@ docker run \
 -p 9000:9000 \
 -v /var/run/docker.sock:/var/run/docker.sock \
 -e PGID=1000 -e PUID=1000 \
--e VIRTUAL_HOST=portainer.$durl \
--e LETSENCRYPT_HOST=portainer.$durl \
--e LETSENCRYPT_EMAIL=$leemail \
+-e VIRTUAL_HOST=portainer."$durl" \
+-e LETSENCRYPT_HOST=portainer."$durl" \
+-e LETSENCRYPT_EMAIL="$leemail" \
 portainer/portainer
 
 # Sonarr
@@ -212,9 +212,9 @@ docker create \
 -v /home/plex/Sonarr:/tv \
 -v /home/plex/NzbGet:/downloads \
 -v /usr/bin/rclone:/rclone \
--e VIRTUAL_HOST=sonarr.$durl \
--e LETSENCRYPT_HOST=sonarr.$durl \
--e LETSENCRYPT_EMAIL=$leemail \
+-e VIRTUAL_HOST=sonarr."$durl" \
+-e LETSENCRYPT_HOST=sonarr."$durl" \
+-e LETSENCRYPT_EMAIL="$leemail" \
 linuxserver/sonarr
 
 # Radarr
@@ -227,9 +227,9 @@ docker create \
 -v /etc/localtime:/etc/localtime:ro \
 -e TZ=Europe/London \
 -e PGID=1000 -e PUID=1000  \
--e VIRTUAL_HOST=radarr.$durl \
--e LETSENCRYPT_HOST=radarr.$durl \
--e LETSENCRYPT_EMAIL=$leemail \
+-e VIRTUAL_HOST=radarr."$durl" \
+-e LETSENCRYPT_HOST=radarr."$durl" \
+-e LETSENCRYPT_EMAIL="$leemail" \
 -p 7878:7878 \
 linuxserver/radarr
 
@@ -241,9 +241,9 @@ docker create \
 -e TZ=Europe/London \
 -v /home/plex/NzbGet:/config \
 -v /home/plex/NzbGet:/downloads \
--e VIRTUAL_HOST=nzbget.$durl \
--e LETSENCRYPT_HOST=nzbget.$durl \
--e LETSENCRYPT_EMAIL=$leemail \
+-e VIRTUAL_HOST=nzbget."$durl" \
+-e LETSENCRYPT_HOST=nzbget."$durl" \
+-e LETSENCRYPT_EMAIL="$leemail" \
 linuxserver/nzbget
 
 # NzbHydra
@@ -253,9 +253,9 @@ docker create --name=hydra \
 -e PGID=1000 -e PUID=1000 \
 -e TZ=Europe/London \
 -p 5075:5075 \
--e VIRTUAL_HOST=nzbhydra.$durl \
--e LETSENCRYPT_HOST=nzbhydra.$durl \
--e LETSENCRYPT_EMAIL=$leemail \
+-e VIRTUAL_HOST=nzbhydra."$durl" \
+-e LETSENCRYPT_HOST=nzbhydra."$durl" \
+-e LETSENCRYPT_EMAIL="$leemail" \
 linuxserver/hydra
 
 
