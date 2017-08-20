@@ -5,11 +5,13 @@ echo "Updating Ubuntu..."
 apt-get update > /dev/null
 apt-get -y upgrade > /dev/null
 apt-get -y dist-upgrade > /dev/null
+echo "- Complete"
 echo "Cleaning Ubuntu..."
 apt-get -y autoremove > /dev/null
 apt-get clean > /dev/null
-apt-get purge -y $(dpkg -l | awk '/^rc/ { print $2 }')
-
+apt-get purge -y $(dpkg -l | awk '/^rc/ { print $2 }') > dev/null
+echo "- Complete"
+echo "Adding User and SSH Key"
 # Adduser
 echo -n "Please Enter a Username: "
 read uname
@@ -27,7 +29,8 @@ chown $uname:sudo -R /home/$uname/.ssh
 chown $uname:sudo -R /home/$uname/.ssh/authorized_keys
 chmod 700 /home/$uname/.ssh
 chmod 600 /home/$uname/.ssh/authorized_keys
-
+echo "- Complete"
+echo "Securing Ubuntu"
 #Secure SSH Login
 sed -i 's/Port 22/Port 2245/' /etc/ssh/sshd_config
 sed -i 's/PermitRootLogin .*/PermitRootLogin no/g' /etc/ssh/sshd_config
@@ -85,6 +88,7 @@ EOT
 # Prevent IP Spoofing
 sed -i 's/order hosts,bind/order bind,hosts/' /etc/host.conf
 sed -i 's/multi on/nospoof on/' /etc/host.conf
+echo "- Complete"
 echo
 echo
 echo
