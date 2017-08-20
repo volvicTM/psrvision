@@ -1,5 +1,5 @@
 #!/bin/bash
-uname=$USER
+
 # Make required directories
 echo "Creating Directories"
 mkdir /home/$USER/Downloads
@@ -28,8 +28,9 @@ echo "Creating Scripts"
 # Plex
 /bin/cat <<EOM >/home/$USER/Scripts/plexmount.sh
 #! /bin/bash
+
 #Unmount
-/bin/fusermount -uz /home/$UPATH/Plex/Media
+/bin/fusermount -uz /home/plex/Plex/Media
 
 #Mount
 /usr/bin/rclone mount \
@@ -39,20 +40,20 @@ echo "Creating Scripts"
 --stats 1s \
 --quiet \
 --buffer-size 512M \
---log-file=/home/$UPATH/Scripts/logs/plexmount.log \
-Plex_Crypt: /home/$UPATH/Plex/Media &
+--log-file=/home/plex/Scripts/logs/plexmount.log \
+Plex_Crypt: /home/plex/Plex/Media &
+
 exit
 EOM
-sed -i '2s/^/UPATH="$USER"\n/' /home/$USER/Scripts/plexmount.sh
 
 # Sonarr
 /bin/cat <<EOM >/home/$USER/Scripts/sonarrmount.sh
 #! /bin/bash
 
 #Unmount
-/bin/fusermount -uz /home/&UPATH/Sonarr/Media
-/bin/fusermount -uz /home/&UPATH/Sonarr/gdrive
-/bin/fusermount -uz /home/&UPATH/Sonarr/local
+/bin/fusermount -uz /home/plex/Sonarr/Media
+/bin/fusermount -uz /home/plex/Sonarr/gdrive
+/bin/fusermount -uz /home/plex/Sonarr/local
 
 #Mount
 /usr/bin/rclone mount \
@@ -61,24 +62,23 @@ sed -i '2s/^/UPATH="$USER"\n/' /home/$USER/Scripts/plexmount.sh
 --stats 1s \
 --quiet \
 --buffer-size 512M \
---log-file=/home/&UPATH/Scripts/logs/sonarrmount.log \
-Sonarr_Crypt: /home/&UPATH/Sonarr/gdrive &
+--log-file=/home/plex/Scripts/logs/sonarrmount.log \
+Sonarr_Crypt: /home/plex/Sonarr/gdrive &
 
 #UnionFuse Local and gdrive into Media
-unionfs-fuse -o cow,allow_other /home/&UPATH/Sonarr/local=RW:/home/&UPATH/Sonarr/gdrive=RO /home/&UPATH/Sonarr/Media/
+unionfs-fuse -o cow,allow_other /home/plex/Sonarr/local=RW:/home/plex/Sonarr/gdrive=RO /home/plex/Sonarr/Media/
 
 exit
 EOM
-sed -i '2s/^/UPATH="$USER"\n/' /home/$USER/Scripts/sonarrmount.sh
 
 # Radarr
 /bin/cat <<EOM >/home/$USER/Scripts/radarrmount.sh
 #! /bin/bash
 
 #Unmount
-/bin/fusermount -uz /home/&UPATH/Radarr/gdrive
-/bin/fusermount -uz /home/&UPATH/Radarr/local
-/bin/fusermount -uz /home/&UPATH/Radarr/Media
+/bin/fusermount -uz /home/plex/Radarr/gdrive
+/bin/fusermount -uz /home/plex/Radarr/local
+/bin/fusermount -uz /home/plex/Radarr/Media
 
 #Mount
 /usr/bin/rclone mount \
@@ -87,15 +87,14 @@ sed -i '2s/^/UPATH="$USER"\n/' /home/$USER/Scripts/sonarrmount.sh
 --stats 1s \
 --quiet \
 --buffer-size 512M \
---log-file=/home/&UPATH/Scripts/logs/radarrmount.log \
-Radarr_Crypt: /home/&UPATH/Radarr/gdrive &
+--log-file=/home/plex/Scripts/logs/radarrmount.log \
+Radarr_Crypt: /home/plex/Radarr/gdrive &
 
 #UnionFuse Local and gdrive into Media
-unionfs-fuse -o cow,allow_other /home/&UPATH/Radarr/local=RW:/home/&UPATH/Radarr/gdrive=RO /home/&UPATH/Radarr/Media/
+unionfs-fuse -o cow,allow_other /home/plex/Radarr/local=RW:/home/plex/Radarr/gdrive=RO /home/plex/Radarr/Media/
 
 exit
 EOM
-sed -i '2s/^/UPATH="$USER"\n/' /home/$USER/Scripts/radarrmount.sh
 
 # Make Scripts executable
 chmod +x /home/$USER/Scripts/*.sh
