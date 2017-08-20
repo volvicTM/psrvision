@@ -223,9 +223,9 @@ docker create \
 linuxserver/nzbget
 
 # NzbHydra
-docker create 
+docker create \
 --name hydra \
--v /home/plex/NzbHydra:/config \
+-v /home/plex/Nzbhydra:/config \
 -v /home/plex/Nzbget:/downloads \
 -v /etc/localtime:/etc/localtime:ro \
 -e PGID=1000 -e PUID=1000 \
