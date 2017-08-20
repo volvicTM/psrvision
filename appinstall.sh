@@ -216,8 +216,8 @@ docker create \
 -e TZ=Europe/London \
 -v /home/plex/NzbGet:/config \
 -v /home/plex/NzbGet:/downloads \
--e VIRTUAL_HOST=nzbget."$durl" \
--e LETSENCRYPT_HOST=nzbget."$durl" \
+-e VIRTUAL_HOST=nzbget.thisnotbereal.info \
+-e LETSENCRYPT_HOST=nzbget.thisnotbereal.info \
 -e LETSENCRYPT_EMAIL="$leemail" \
 linuxserver/nzbget
 
@@ -228,9 +228,9 @@ docker create --name=hydra \
 -e PGID=1000 -e PUID=1000 \
 -e TZ=Europe/London \
 -p 5075:5075 \
--e VIRTUAL_HOST=nzbhydra."$durl" \
--e LETSENCRYPT_HOST=nzbhydra."$durl" \
--e LETSENCRYPT_EMAIL="$leemail" \
+-e VIRTUAL_HOST=nzbhydra.thisnotbereal.info \
+-e LETSENCRYPT_HOST=nzbhydra.thisnotbereal.info \
+-e LETSENCRYPT_EMAIL=volvictm@protonmail.com \
 linuxserver/hydra
 echo "- Complete"
 echo "Installation Complete"
