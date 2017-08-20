@@ -11,9 +11,8 @@ apt-get -y autoremove > /dev/null
 apt-get clean > /dev/null
 apt-get purge -y $(dpkg -l | awk '/^rc/ { print $2 }') > dev/null
 echo "- Complete"
-echo "Adding User and SSH Key"
+echo "Adding user 'plex' and SSH Key"
 # Adduser
-
 randompw=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
 useradd -d /home/plex -m -g sudo -s /bin/bash plex
 echo plex:$randompw | chpasswd
@@ -24,8 +23,8 @@ echo "Please Generate a SSH Key with puttygen"
 echo -n "Paste the PUBLIC SSH key here: "
 read pubkey
 echo $pubkey >> /home/plex/.ssh/authorized_keys
-chown $uname:sudo -R /home/plex/.ssh
-chown $uname:sudo -R /home/plex/.ssh/authorized_keys
+chown plex:sudo -R /home/plex/.ssh
+chown plex:sudo -R /home/plex/.ssh/authorized_keys
 chmod 700 /home/plex/.ssh
 chmod 600 /home/plex/.ssh/authorized_keys
 echo "- Complete"
@@ -99,8 +98,8 @@ echo "****************************"
 echo
 echo "Reboot the server before continuing." 
 cp -r /root/psrvision /home/plex/psrvision
-chown -R $uname:sudo /home/plex/psrvision
-chown -R $uname:sudo /home/plex/psrvision/*
+chown -R plex:sudo /home/plex/psrvision
+chown -R plex:sudo /home/plex/psrvision/*
 chmod +x /home/plex/psrvision/appinstall.sh
 rm -rf /root/psrvision
 
