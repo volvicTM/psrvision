@@ -17,6 +17,7 @@ mkdir /home/$USER/Radarr/Media
 mkdir /home/$USER/Nzbget
 mkdir /home/$USER/Nzbget/Downloads
 mkdir /home/$USER/Nzbhydra
+mkdir /home/$USER/sslcerts
 
 # Add rclone scripts
 # Plex
@@ -99,6 +100,7 @@ sudo apt-get -y install unzip
 sudo apt-get -y install fuse
 # Unionfs
 sudo apt-get -y install unionfs-fuse
+sed -i 's/#user_allow_other/user_allow_other/g' /etc/fuse.conf
 # Docker
 sudo apt-get -y install \
     apt-transport-https \
@@ -119,8 +121,59 @@ sudo cp /home/$USER/Downloads/rclone*/rclone /usr/bin
 sudo chown root:root /usr/bin/rclone
 sudo chmod 755 /usr/bin/rclone
 rm -rf /home/$USER/Downloads/rclone*
-echo "finished installing"
+echo "finished installing apps"
 echo "Setting up Docker Containers"
 
+# Add and run Dockers
+sudo groupadd docker
+sudo usermod -aG docker $USER
+sudo systemctl enable docker
 
+# Get Plex Claim Code
+read -p "Please go to plex.tv/claim login and copy the code. Press [Enter] to continue..."
+echo -n "Paste the code in: " 
+read pclaim
+
+# Obtain Email Address for Lets Encrypt
+echo -n "Enter an email address for Let's Encrypt renewals: "
+read leemail
+
+# Obtain Domain
+echo -n "Please enter your domain address, e.g. thisdomain.com: "
+read durl
+
+# nginx-proxy docker
+docker run -d -p 80:80 -p 443:443 \
+--name nginx-proxy \
+-v /home/$USER/sslcerts:/etc/nginx/certs:ro \
+-v /etc/nginx/vhost.d \
+-v /usr/share/nginx/html \
+-v /var/run/docker.sock:/tmp/docker.sock:ro \
+-e TERM=xterm \
+--label com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy \
+jwilder/nginx-proxy
+
+# Let's Encrypt
+docker run -d \
+-v /home/$USER/sslcerts:/etc/nginx/certs:rw \
+-v /var/run/docker.sock:/var/run/docker.sock:ro \
+--volumes-from nginx-proxy \
+jrcs/letsencrypt-nginx-proxy-companion
+
+# Plex
+docker run \
+-d \
+--name plex \
+--network=host \
+-e TZ="Europe/London" \
+-e PLEX_CLAIM="$pclaim" \
+-e VIRTUAL_HOST=plex.$durl \
+-e LETSENCRYPT_HOST=plex.$durl \
+-e LETSENCRYPT_EMAIL=$leemail \
+-e PLEX_UID="1000" \
+-e PLEX_GID="1000" \
+-v /home/$USER/Plex:/config \
+-v /home/$USER/Plex:/transcode \
+-v /home/$USER/Plex:/data \
+plexinc/pms-docker
 exit
