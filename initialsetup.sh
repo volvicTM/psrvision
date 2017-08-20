@@ -102,8 +102,8 @@ echo
 echo "Reboot the server before continuing." 
 echo 
 echo
-echo
-cp /root/psrvision /home/$uname/psrvision
+echo "Moving files to new user"
+cp -vr /root/psrvision /home/$uname/psrvision
 chown -R $uname:sudo /home/$uname/psrvision
 chown -R $uname:sudo /home/$uname/psrvision/*
 chmod +x /home/$uname/psrvision/appinstall.sh
