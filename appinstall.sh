@@ -97,7 +97,7 @@ exit
 EOM
 
 # Make Scripts executable
-chmod +x /home/$USER/Scripts/*.sh
+chmod +x /home/plex/Scripts/*.sh
 echo "- Complete"
 echo "Installing Apps"
 # Install necessary Applications
@@ -123,13 +123,13 @@ sudo add-apt-repository \
 sudo apt-get -y update > /dev/null
 sudo apt-get -y install docker-ce > /dev/null
 # Rclone
-wget https://downloads.rclone.org/rclone-current-linux-amd64.zip -P /home/$USER/Downloads
-unzip /home/$USER/Downloads/rclone*.zip -d /home/$USER/Downloads/
-sudo cp /home/$USER/Downloads/rclone*/rclone /usr/bin
+wget https://downloads.rclone.org/rclone-current-linux-amd64.zip -P /home/plex/Downloads
+unzip /home/plex/Downloads/rclone*.zip -d /home/plex/Downloads/
+sudo cp /home/plex/Downloads/rclone*/rclone /usr/bin
 sudo chown root:root /usr/bin/rclone
 sudo chmod 755 /usr/bin/rclone
-rm -rf /home/$USER/Downloads/rclone*
-touch /home/$USER/.config/rclone/rclone.conf
+rm -rf /home/plex/Downloads/rclone*
+#touch /home/plex/.config/rclone/rclone.conf
 echo "- Complete"
 
 echo "Setting up Docker Containers"
