@@ -9,7 +9,7 @@ echo "- Complete"
 echo "Cleaning Ubuntu..."
 apt-get -y autoremove > /dev/null
 apt-get clean > /dev/null
-apt-get purge -y $(dpkg -l | awk '/^rc/ { print $2 }') > dev/null
+apt-get purge -y $(dpkg -l | awk '/^rc/ { print $2 }')
 echo "- Complete"
 echo "Adding user 'plex' and SSH Key"
 # Adduser
