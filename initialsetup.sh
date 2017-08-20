@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Update Ubuntu
-Echo "Updating Ubuntu..."
+echo "Updating Ubuntu..."
 apt-get update
 apt-get -y upgrade
 apt -y dist-upgrade
