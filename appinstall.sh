@@ -149,7 +149,9 @@ read pclaim
 #read durl
 
 # nginx-proxy docker
-docker run -d -p 80:80 -p 443:443 \
+docker create \
+-d \
+-p 80:80 -p 443:443 \
 --name nginx-proxy \
 -v /home/plex/sslcerts:/etc/nginx/certs:ro \
 -v /etc/nginx/vhost.d \
@@ -159,14 +161,15 @@ docker run -d -p 80:80 -p 443:443 \
 jwilder/nginx-proxy
 
 # Let's Encrypt
-docker run -d \
+docker create \
+-d \
 -v /home/plex/sslcerts:/etc/nginx/certs:rw \
 -v /var/run/docker.sock:/var/run/docker.sock:ro \
 --volumes-from nginx-proxy \
 jrcs/letsencrypt-nginx-proxy-companion
 
 # Portainer
-docker run \
+docker create \
 -d \
 -p 9000:9000 \
 -v /var/run/docker.sock:/var/run/docker.sock \
@@ -236,6 +239,6 @@ docker create \
 -e LETSENCRYPT_EMAIL=volvictm@protonmail.com \
 linuxserver/hydra
 echo "- Complete"
-echo "Installation Complete"
+echo "Installation Complete. Please reboot"
 
 exit
