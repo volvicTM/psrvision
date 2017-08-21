@@ -150,16 +150,33 @@ sudo systemctl enable docker
 
 # Nginx-Let's Encrypt Proxy
 docker create \
-  --privileged \
-  --name=letsencrypt \
-  -v /home/plex/nginx:/config \
-  -e PGID=1000 -e PUID=1000  \
-  -e EMAIL=volvictm@protonmail.com \
-  -e URL=thisnotbereal.info \
-  -e SUBDOMAINS=tv,movies,nzbget,nzbhydra \
-  -p 443:443 \
-  -e TZ=Europe/London \
-  linuxserver/letsencrypt
+--privileged \
+--name=letsencrypt \
+-v /home/plex/nginx:/config \
+-e PGID=1000 -e PUID=1000  \
+-e EMAIL=volvictm@protonmail.com \
+-e URL=thisnotbereal.info \
+-e SUBDOMAINS=tv,movies,nzbget,nzbhydra \
+-p 443:443 \
+-e TZ=Europe/London \
+linuxserver/letsencrypt
+
+# Plex 
+docker run \
+-d \
+--name plex \
+--network=host \
+-e TZ="Europe/London" \
+-e PLEX_CLAIM="claim-MxskLXzqBpF8jErPUBTU" \
+-e VIRTUAL_HOST=plex.thisnotbereal.info \
+-e LETSENCRYPT_HOST=plex.thisnotbereal.info \
+-e LETSENCRYPT_EMAIL=volvictm@protonmail.com \
+-e PLEX_UID="1000" \
+-e PLEX_GID="1000" \
+-v /home/plex/Plex:/config \
+-v /home/plex/Plex:/transcode \
+-v /home/plex/Plex:/data \
+plexinc/pms-docker
 
 # Sonarr
 docker create \
