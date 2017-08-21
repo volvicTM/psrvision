@@ -18,7 +18,6 @@ mkdir /home/$USER/Radarr/Media
 mkdir /home/$USER/Nzbget
 mkdir /home/$USER/Nzbget/Downloads
 mkdir /home/$USER/Nzbhydra
-mkdir /home/$USER/sslcerts
 mkdir /home/$USER/.config
 mkdir /home/$USER/.config/rclone
 mkdir /home/&USER/nginx
@@ -157,7 +156,6 @@ docker create \
 -e PGID=1000 -e PUID=1000  \
 -e EMAIL=volvictm@protonmail.com \
 -e URL=thisnotbereal.info \
--e SUBDOMAINS=tv,movies,nzbget,nzbhydra \
 -p 443:443 \
 -e TZ=Europe/London \
 linuxserver/letsencrypt
