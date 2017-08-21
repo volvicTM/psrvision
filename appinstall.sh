@@ -21,6 +21,7 @@ mkdir /home/$USER/Nzbhydra
 mkdir /home/$USER/sslcerts
 mkdir /home/$USER/.config
 mkdir /home/$USER/.config/rclone
+mkdir /home/&USER/nginx
 echo "- Complete"
 
 echo "Creating Scripts"
@@ -137,8 +138,8 @@ echo "Setting up Docker Containers"
 sudo systemctl enable docker
 
 # Get Plex Claim Code
-#echo -n "Please go to plex.tv/claim and copy and paste the code here: "
-#read pclaim
+echo -n "Please go to plex.tv/claim and copy and paste the code here: "
+read pclaim
 
 # Obtain Email Address for Lets Encrypt
 #echo -n "Enter an email address for Let's Encrypt renewals: "
@@ -167,10 +168,7 @@ docker run \
 --name plex \
 --network=host \
 -e TZ="Europe/London" \
--e PLEX_CLAIM="claim-MxskLXzqBpF8jErPUBTU" \
--e VIRTUAL_HOST=plex.thisnotbereal.info \
--e LETSENCRYPT_HOST=plex.thisnotbereal.info \
--e LETSENCRYPT_EMAIL=volvictm@protonmail.com \
+-e PLEX_CLAIM="$pclaim" \
 -e PLEX_UID="1000" \
 -e PLEX_GID="1000" \
 -v /home/plex/Plex:/config \
