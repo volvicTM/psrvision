@@ -137,8 +137,8 @@ echo "Setting up Docker Containers"
 sudo systemctl enable docker
 
 # Get Plex Claim Code
-echo -n "Please go to plex.tv/claim and copy and paste the code here: "
-read pclaim
+#echo -n "Please go to plex.tv/claim and copy and paste the code here: "
+#read pclaim
 
 # Obtain Email Address for Lets Encrypt
 #echo -n "Enter an email address for Let's Encrypt renewals: "
@@ -148,23 +148,18 @@ read pclaim
 #echo -n "Please enter your domain address, e.g. thisdomain.com: "
 #read durl
 
-# nginx-proxy docker
+# Nginx-Let's Encrypt Proxy
 docker create \
--p 80:80 -p 443:443 \
---name nginx-proxy \
--v /home/plex/sslcerts:/etc/nginx/certs:ro \
--v /etc/nginx/vhost.d \
--v /usr/share/nginx/html \
--v /var/run/docker.sock:/tmp/docker.sock:ro \
---label com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy \
-jwilder/nginx-proxy
-
-# Let's Encrypt
-docker create \
--v /home/plex/sslcerts:/etc/nginx/certs:rw \
--v /var/run/docker.sock:/var/run/docker.sock:ro \
---volumes-from nginx-proxy \
-jrcs/letsencrypt-nginx-proxy-companion
+  --privileged \
+  --name=letsencrypt \
+  -v /home/plex/nginx:/config \
+  -e PGID=1000 -e PUID=1000  \
+  -e EMAIL=volvictm@protonmail.com \
+  -e URL=thisnotbereal.info \
+  -e SUBDOMAINS=tv,movies,nzbget,nzbhydra \
+  -p 443:443 \
+  -e TZ=Europe/London \
+  linuxserver/letsencrypt
 
 # Sonarr
 docker create \
@@ -177,9 +172,6 @@ docker create \
 -v /home/plex/Sonarr:/tv \
 -v /home/plex/Nzbget:/downloads \
 -v /usr/bin/rclone:/rclone \
--e VIRTUAL_HOST=sonarr.thisnotbereal.info \
--e LETSENCRYPT_HOST=sonarr.thisnotbereal.info \
--e LETSENCRYPT_EMAIL=volvictm@protonmail.com \
 linuxserver/sonarr
 
 # Radarr
@@ -192,9 +184,6 @@ docker create \
 -v /etc/localtime:/etc/localtime:ro \
 -e TZ=Europe/London \
 -e PGID=1000 -e PUID=1000  \
--e VIRTUAL_HOST=radarr.thisnotbereal.info \
--e LETSENCRYPT_HOST=radarr.thisnotbereal.info \
--e LETSENCRYPT_EMAIL=volvictm@protonmail.com \
 -p 7878:7878 \
 linuxserver/radarr
 
@@ -207,9 +196,6 @@ docker create \
 -v /home/plex/Nzbget:/config \
 -v /home/plex/Nzbget:/downloads \
 -v /etc/localtime:/etc/localtime:ro \
--e VIRTUAL_HOST=nzbget.thisnotbereal.info \
--e LETSENCRYPT_HOST=nzbget.thisnotbereal.info \
--e LETSENCRYPT_EMAIL=volvictm@protonmail.com \
 linuxserver/nzbget
 
 # NzbHydra
@@ -221,9 +207,6 @@ docker create \
 -e PGID=1000 -e PUID=1000 \
 -e TZ=Europe/London \
 -p 5075:5075 \
--e VIRTUAL_HOST=nzbhydra.thisnotbereal.info \
--e LETSENCRYPT_HOST=nzbhydra.thisnotbereal.info \
--e LETSENCRYPT_EMAIL=volvictm@protonmail.com \
 linuxserver/hydra
 echo "- Complete"
 echo "Installation Complete. Please reboot"
