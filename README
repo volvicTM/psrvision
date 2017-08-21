@@ -6,7 +6,7 @@
 # The Plan #
 ############
 #
-# Stream Media to Plex (or Ombi) from a Cloud Service Provider, such as Google Drive. 
+# Stream Media to Plex (or Emby) from a Cloud Service Provider, such as Google Drive. 
 # Media organised via Sonarr, Radarr and Sabnzbd Dockers.
 # Rclone to Upload Media to Cloud Service Provider.
 # Rclone will be used for mounts, and tpslimit flag to prevent api bans.
