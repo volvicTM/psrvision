@@ -150,7 +150,6 @@ read pclaim
 
 # nginx-proxy docker
 docker create \
--d \
 -p 80:80 -p 443:443 \
 --name nginx-proxy \
 -v /home/plex/sslcerts:/etc/nginx/certs:ro \
@@ -162,22 +161,10 @@ jwilder/nginx-proxy
 
 # Let's Encrypt
 docker create \
--d \
 -v /home/plex/sslcerts:/etc/nginx/certs:rw \
 -v /var/run/docker.sock:/var/run/docker.sock:ro \
 --volumes-from nginx-proxy \
 jrcs/letsencrypt-nginx-proxy-companion
-
-# Portainer
-docker create \
--d \
--p 9000:9000 \
--v /var/run/docker.sock:/var/run/docker.sock \
--e PGID=1000 -e PUID=1000 \
--e VIRTUAL_HOST=portainer.thisnotbereal.info \
--e LETSENCRYPT_HOST=portainer.thisnotbereal.info \
--e LETSENCRYPT_EMAIL=volvictm@protonmail.com \
-portainer/portainer
 
 # Sonarr
 docker create \
