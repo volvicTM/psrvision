@@ -2,35 +2,35 @@
 
 # Make required directories
 echo "Creating Directories"
-mkdir /home/$USER/Downloads
-mkdir /home/$USER/Scripts
-mkdir /home/$USER/Scripts/logs
-mkdir /home/$USER/Plex
-mkdir /home/$USER/Plex/Media
-mkdir /home/$USER/Sonarr
-mkdir /home/$USER/Sonarr/local
-mkdir /home/$USER/Sonarr/gdrive
-mkdir /home/$USER/Sonarr/Media
-mkdir /home/$USER/Radarr
-mkdir /home/$USER/Radarr/local
-mkdir /home/$USER/Radarr/gdrive
-mkdir /home/$USER/Radarr/Media
-mkdir /home/$USER/Sabnzbd
-mkdir /home/$USER/Sabnzbd/Downloads
-mkdir /home/$USER/Sabnzbd
-mkdir /home/$USER/.config
-mkdir /home/$USER/.config/rclone
-mkdir /home/&USER/nginx
+mkdir /home/USERNAME/Downloads
+mkdir /home/USERNAME/Scripts
+mkdir /home/USERNAME/Scripts/logs
+mkdir /home/USERNAME/Plex
+mkdir /home/USERNAME/Plex/Media
+mkdir /home/USERNAME/Sonarr
+mkdir /home/USERNAME/Sonarr/local
+mkdir /home/USERNAME/Sonarr/gdrive
+mkdir /home/USERNAME/Sonarr/Media
+mkdir /home/USERNAME/Radarr
+mkdir /home/USERNAME/Radarr/local
+mkdir /home/USERNAME/Radarr/gdrive
+mkdir /home/USERNAME/Radarr/Media
+mkdir /home/USERNAME/Sabnzbd
+mkdir /home/USERNAME/Sabnzbd/Downloads
+mkdir /home/USERNAME/Sabnzbd
+mkdir /home/USERNAME/.config
+mkdir /home/USERNAME/.config/rclone
+mkdir /home/USERNAME/nginx
 echo "- Complete"
 
 echo "Creating Scripts"
 # Add rclone scripts
 # Plex
-/bin/cat <<EOM >/home/$USER/Scripts/plexmount.sh
+/bin/cat <<EOM >/home/USERNAME/Scripts/plexmount.sh
 #! /bin/bash
 
 #Unmount
-/bin/fusermount -uz /home/plex/Plex/Media
+/bin/fusermount -uz /home/USERNAME/Plex/Media
 
 #Mount
 /usr/bin/rclone mount \
@@ -40,20 +40,20 @@ echo "Creating Scripts"
 --stats 1s \
 --quiet \
 --buffer-size 512M \
---log-file=/home/plex/Scripts/logs/plexmount.log \
-Plex_Crypt: /home/plex/Plex/Media &
+--log-file=/home/USERNAME/Scripts/logs/plexmount.log \
+Plex_Crypt: /home/USERNAME/Plex/Media &
 
 exit
 EOM
 
 # Sonarr
-/bin/cat <<EOM >/home/$USER/Scripts/sonarrmount.sh
+/bin/cat <<EOM >/home/USERNAME/Scripts/sonarrmount.sh
 #! /bin/bash
 
 #Unmount
-/bin/fusermount -uz /home/plex/Sonarr/Media
-/bin/fusermount -uz /home/plex/Sonarr/gdrive
-/bin/fusermount -uz /home/plex/Sonarr/local
+/bin/fusermount -uz /home/USERNAME/Sonarr/Media
+/bin/fusermount -uz /home/USERNAME/Sonarr/gdrive
+/bin/fusermount -uz /home/USERNAME/Sonarr/local
 
 #Mount
 /usr/bin/rclone mount \
@@ -62,23 +62,23 @@ EOM
 --stats 1s \
 --quiet \
 --buffer-size 512M \
---log-file=/home/plex/Scripts/logs/sonarrmount.log \
-Sonarr_Crypt: /home/plex/Sonarr/gdrive &
+--log-file=/home/USERNAME/Scripts/logs/sonarrmount.log \
+Sonarr_Crypt: /home/USERNAME/Sonarr/gdrive &
 
 #UnionFuse Local and gdrive into Media
-unionfs-fuse -o cow,allow_other /home/plex/Sonarr/local=RW:/home/plex/Sonarr/gdrive=RO /home/plex/Sonarr/Media/
+unionfs-fuse -o cow,allow_other /home/USERNAME/Sonarr/local=RW:/home/USERNAME/Sonarr/gdrive=RO /home/USERNAME/Sonarr/Media/
 
 exit
 EOM
 
 # Radarr
-/bin/cat <<EOM >/home/$USER/Scripts/radarrmount.sh
+/bin/cat <<EOM >/home/USERNAME/Scripts/radarrmount.sh
 #! /bin/bash
 
 #Unmount
-/bin/fusermount -uz /home/plex/Radarr/gdrive
-/bin/fusermount -uz /home/plex/Radarr/local
-/bin/fusermount -uz /home/plex/Radarr/Media
+/bin/fusermount -uz /home/USERNAME/Radarr/gdrive
+/bin/fusermount -uz /home/USERNAME/Radarr/local
+/bin/fusermount -uz /home/USERNAME/Radarr/Media
 
 #Mount
 /usr/bin/rclone mount \
@@ -87,17 +87,17 @@ EOM
 --stats 1s \
 --quiet \
 --buffer-size 512M \
---log-file=/home/plex/Scripts/logs/radarrmount.log \
-Radarr_Crypt: /home/plex/Radarr/gdrive &
+--log-file=/home/USERNAME/Scripts/logs/radarrmount.log \
+Radarr_Crypt: /home/USERNAME/Radarr/gdrive &
 
 #UnionFuse Local and gdrive into Media
-unionfs-fuse -o cow,allow_other /home/plex/Radarr/local=RW:/home/plex/Radarr/gdrive=RO /home/plex/Radarr/Media/
+unionfs-fuse -o cow,allow_other /home/USERNAME/Radarr/local=RW:/home/USERNAME/Radarr/gdrive=RO /home/USERNAME/Radarr/Media/
 
 exit
 EOM
 
 # Make Scripts executable
-chmod +x /home/plex/Scripts/*.sh
+chmod +x /home/USERNAME/Scripts/*.sh
 echo "- Complete"
 echo "Installing Apps"
 # Install necessary Applications
@@ -123,13 +123,13 @@ sudo add-apt-repository \
 sudo apt-get -y update > /dev/null
 sudo apt-get -y install docker-ce > /dev/null
 # Rclone
-wget https://downloads.rclone.org/rclone-current-linux-amd64.zip -P /home/plex/Downloads
-unzip /home/plex/Downloads/rclone*.zip -d /home/plex/Downloads/
-sudo cp /home/plex/Downloads/rclone*/rclone /usr/bin
+wget https://downloads.rclone.org/rclone-current-linux-amd64.zip -P /home/USERNAME/Downloads
+unzip /home/USERNAME/Downloads/rclone*.zip -d /home/USERNAME/Downloads/
+sudo cp /home/USERNAME/Downloads/rclone*/rclone /usr/bin
 sudo chown root:root /usr/bin/rclone
 sudo chmod 755 /usr/bin/rclone
-rm -rf /home/plex/Downloads/rclone*
-#touch /home/plex/.config/rclone/rclone.conf
+rm -rf /home/USERNAME/Downloads/rclone*
+#touch /home/USERNAME/.config/rclone/rclone.conf
 echo "- Complete"
 
 echo "Setting up Docker Containers"
@@ -152,10 +152,10 @@ read pclaim
 docker create \
 --privileged \
 --name=letsencrypt \
--v /home/plex/nginx:/config \
+-v /home/USERNAME/nginx:/config \
 -e PGID=1000 -e PUID=1000  \
--e EMAIL=volvictm@protonmail.com \
--e URL=thisnotbereal.info \
+-e EMAIL=USEREMAIL \
+-e URL=USERURL \
 -p 443:443 \
 -e TZ=Europe/London \
 linuxserver/letsencrypt
@@ -166,12 +166,12 @@ docker run \
 --name plex \
 --network=host \
 -e TZ="Europe/London" \
--e PLEX_CLAIM="$pclaim" \
+-e PLEX_CLAIM="USERCLAIM" \
 -e PLEX_UID="1000" \
 -e PLEX_GID="1000" \
--v /home/plex/Plex:/config \
--v /home/plex/Plex:/transcode \
--v /home/plex/Plex:/data \
+-v /home/USERNAME/Plex:/config \
+-v /home/USERNAME/Plex:/transcode \
+-v /home/USERNAME/Plex:/data \
 plexinc/pms-docker
 
 # Sonarr
@@ -181,18 +181,18 @@ docker create \
 -e PUID=1000 -e PGID=1000 \
 -e TZ=Europe/London \
 -v /etc/localtime:/etc/localtime:ro \
--v /home/plex/Sonarr:/config \
--v /home/plex/Sonarr:/tv \
--v /home/plex/Sabnzbd:/downloads \
+-v /home/USERNAME/Sonarr:/config \
+-v /home/USERNAME/Sonarr:/tv \
+-v /home/USERNAME/Sabnzbd:/downloads \
 -v /usr/bin/rclone:/rclone \
 linuxserver/sonarr
 
 # Radarr
 docker create \
 --name radarr \
--v /home/plex/Radarr:/config \
--v /home/plex/Sabnzbd:/downloads \
--v /home/plex/Radarr:/movies \
+-v /home/USERNAME/Radarr:/config \
+-v /home/USERNAME/Sabnzbd:/downloads \
+-v /home/USERNAME/Radarr:/movies \
 -v /usr/bin/rclone:/rclone \
 -v /etc/localtime:/etc/localtime:ro \
 -e TZ=Europe/London \
@@ -203,9 +203,9 @@ linuxserver/radarr
 # Sabnzbd
 docker create \
 --name sabnzbd \
--v /home/plex/Sabnzbd:/config \
--v /home/plex/Sabnzbd:/downloads \
--v /home/plex/Sabnzbd/Downloads:/incomplete-downloads \
+-v /home/USERNAME/Sabnzbd:/config \
+-v /home/USERNAME/Sabnzbd:/downloads \
+-v /home/USERNAME/Sabnzbd/Downloads:/incomplete-downloads \
 -v /etc/localtime:/etc/localtime:ro \
 -e PGID=1000 -e PUID=1000 \
 -e TZ=Europe/London \
@@ -215,8 +215,8 @@ linuxserver/sabnzbd
 # NzbHydra
 docker create \
 --name hydra \
--v /home/plex/Nzbhydra:/config \
--v /home/plex/Sabnzbd:/downloads \
+-v /home/USERNAME/Nzbhydra:/config \
+-v /home/USERNAME/Sabnzbd:/downloads \
 -v /etc/localtime:/etc/localtime:ro \
 -e PGID=1000 -e PUID=1000 \
 -e TZ=Europe/London \
@@ -239,8 +239,8 @@ sleep 5
 # Edit containers for Reverse Proxy
 docker stop sonarr
 sleep 5
-rm /home/plex/Sonarr/config.xml
-/bin/cat <<EOM >/home/plex/Sonarr/config.xml
+rm /home/USERNAME/Sonarr/config.xml
+/bin/cat <<EOM >/home/USERNAME/Sonarr/config.xml
 <Config>
   <LogLevel>Info</LogLevel>
   <Port>8989</Port>
@@ -261,8 +261,8 @@ sleep 5
 
 docker stop radarr
 sleep 5
-rm /home/plex/Radarr/config.xml
-/bin/cat <<EOM >/home/plex/Radarr/config.xml
+rm /home/USERNAME/Radarr/config.xml
+/bin/cat <<EOM >/home/USERNAME/Radarr/config.xml
 <Config>
   <LogLevel>Info</LogLevel>
   <Port>7878</Port>
@@ -280,8 +280,8 @@ sleep 5
 
 docker stop hydra
 sleep 5
-rm /home/plex/Nzbhydra/hydra/settings.cfg
-/bin/cat <<EOM >/home/plex/Nzbhydra/hydra/settings.cfg
+rm /home/USERNAME/Nzbhydra/hydra/settings.cfg
+/bin/cat <<EOM >/home/USERNAME/Nzbhydra/hydra/settings.cfg
 {
     "auth": {
         "authType": "none", 
@@ -671,11 +671,11 @@ docker start hydra
 sleep 5
 
 echo "Enter password to access URL's"
-docker exec -it letsencrypt htpasswd -c /config/nginx/.htpasswd thisnotbereal
+docker exec -it letsencrypt htpasswd -c /config/nginx/.htpasswd USERBASICAUTH
 docker stop letsencrypt
 sleep 5
-sudo rm /home/plex/nginx/nginx/site-confs/default
-/bin/cat <<EOM >/home/plex/nginx/nginx/site-confs/default
+sudo rm /home/USERNAME/nginx/nginx/site-confs/default
+/bin/cat <<EOM >/home/USERNAME/nginx/nginx/site-confs/default
 ## listening on port 80 disabled by default, remove the "#" signs to enable
 # redirect all traffic to https
 #server {
@@ -691,7 +691,7 @@ server {
 	root /config/www;
 	index index.html index.htm index.php;
 
-	server_name thisnotbereal.info;
+	server_name USERURL;
 
 	ssl_certificate /config/keys/letsencrypt/fullchain.pem;
 	ssl_certificate_key /config/keys/letsencrypt/privkey.pem;
