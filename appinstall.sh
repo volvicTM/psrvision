@@ -15,9 +15,9 @@ mkdir /home/$USER/Radarr
 mkdir /home/$USER/Radarr/local
 mkdir /home/$USER/Radarr/gdrive
 mkdir /home/$USER/Radarr/Media
-mkdir /home/$USER/Nzbget
-mkdir /home/$USER/Nzbget/Downloads
-mkdir /home/$USER/Nzbhydra
+mkdir /home/$USER/Sabnzbd
+mkdir /home/$USER/Sabnzbd/Downloads
+mkdir /home/$USER/Sabnzbd
 mkdir /home/$USER/.config
 mkdir /home/$USER/.config/rclone
 mkdir /home/&USER/nginx
@@ -183,7 +183,7 @@ docker create \
 -v /etc/localtime:/etc/localtime:ro \
 -v /home/plex/Sonarr:/config \
 -v /home/plex/Sonarr:/tv \
--v /home/plex/Nzbget:/downloads \
+-v /home/plex/Sabnzbd:/downloads \
 -v /usr/bin/rclone:/rclone \
 linuxserver/sonarr
 
@@ -191,7 +191,7 @@ linuxserver/sonarr
 docker create \
 --name radarr \
 -v /home/plex/Radarr:/config \
--v /home/plex/Nzbget:/downloads \
+-v /home/plex/Sabnzbd:/downloads \
 -v /home/plex/Radarr:/movies \
 -v /usr/bin/rclone:/rclone \
 -v /etc/localtime:/etc/localtime:ro \
@@ -200,22 +200,23 @@ docker create \
 -p 7878:7878 \
 linuxserver/radarr
 
-# Nzbget
+# Sabnzbd
 docker create \
---name nzbget \
--p 6789:6789 \
--e PUID=1000 -e PGID=1000 \
--e TZ=Europe/London \
--v /home/plex/Nzbget:/config \
--v /home/plex/Nzbget:/downloads \
+--name sabnzbd \
+-v /home/plex/Sabnzbd:/config \
+-v /home/plex/Sabnzbd:/downloads \
+-v /home/plex/Sabnzbd/Downloads:/incomplete-downloads \
 -v /etc/localtime:/etc/localtime:ro \
-linuxserver/nzbget
+-e PGID=1000 -e PUID=1000 \
+-e TZ=Europe/London \
+-p 8080:8080 \
+linuxserver/sabnzbd
 
 # NzbHydra
 docker create \
 --name hydra \
 -v /home/plex/Nzbhydra:/config \
--v /home/plex/Nzbget:/downloads \
+-v /home/plex/Sabnzbd:/downloads \
 -v /etc/localtime:/etc/localtime:ro \
 -e PGID=1000 -e PUID=1000 \
 -e TZ=Europe/London \
