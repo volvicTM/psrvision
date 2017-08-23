@@ -100,11 +100,9 @@ echo "*** SSH Port: 2245"
 echo "****************************"
 echo
 echo "Reboot the server before continuing." 
-rm /home/USERNAME/psrvision/appinstall.sh~
-rm /home/USERNAME/psrvision/initialsetup.sh~
 cp -r /root/psrvision /home/USERNAME/psrvision
-chown -R plex:sudo /home/USERNAME/psrvision
-chown -R plex:sudo /home/USERNAME/psrvision/*
+chown -R USERNAME:sudo /home/USERNAME/psrvision
+chown -R USERNAME:sudo /home/USERNAME/psrvision/*
 chmod +x /home/USERNAME/psrvision/appinstall.sh
 rm -rf /root/psrvision
 
