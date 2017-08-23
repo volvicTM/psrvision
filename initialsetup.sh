@@ -87,6 +87,9 @@ EOT
 sed -i 's/order hosts,bind/order bind,hosts/' /etc/host.conf
 sed -i 's/multi on/nospoof on/' /etc/host.conf
 echo "- Complete"
+# Get Domain and write to install scripts
+read -p "Go to plex.tv/claim and copy and paste code here: " uclaim
+sed -i~ -e "s/USERCLAIM/${uclaim}/g" appinstall.sh
 echo
 echo "Please record your username and password. (You may change the password at any time!)"
 echo
@@ -97,6 +100,8 @@ echo "*** SSH Port: 2245"
 echo "****************************"
 echo
 echo "Reboot the server before continuing." 
+rm /home/USERNAME/psrvision/appinstall.sh~
+rm /home/USERNAME/psrvision/initialsetup.sh~
 cp -r /root/psrvision /home/USERNAME/psrvision
 chown -R plex:sudo /home/USERNAME/psrvision
 chown -R plex:sudo /home/USERNAME/psrvision/*
