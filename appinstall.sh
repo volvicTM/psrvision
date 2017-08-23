@@ -101,7 +101,6 @@ chmod +x /home/USERNAME/Scripts/*.sh
 echo "- Complete"
 echo "Installing Apps"
 # Install necessary Applications
-sudo apt-get -y update > /dev/null
 # Unzip
 sudo apt-get -y install unzip > /dev/null
 # Fuse
@@ -149,7 +148,8 @@ docker run \
 jwilder/nginx-proxy
 sleep 5
 
-$ docker run -d \
+docker run \
+-d \
 -v /home/USERNAME/sslcerts:/etc/nginx/certs:rw \
 -v /var/run/docker.sock:/var/run/docker.sock:ro \
 --volumes-from nginx-proxy \
