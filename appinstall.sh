@@ -136,18 +136,6 @@ echo "Setting up Docker Containers"
 # Add and run Dockers
 sudo systemctl enable docker
 
-# Get Plex Claim Code
-#echo -n "Please go to plex.tv/claim and copy and paste the code here: "
-#read pclaim
-
-# Obtain Email Address for Lets Encrypt
-#echo -n "Enter an email address for Let's Encrypt renewals: "
-#read leemail
-
-# Obtain Domain
-#echo -n "Please enter your domain address, e.g. thisdomain.com: "
-#read durl
-
 # Nginx-Let's Encrypt Proxy
 docker run \
 -d \
@@ -218,7 +206,7 @@ docker run \
 -e TZ=Europe/London \
 -e PGID=1000 -e PUID=1000  \
 -p 7878:7878 \
---expose=7878
+--expose=7878 \
 -e "VIRTUAL_HOST=radarr.USERURL" \
 -e "LETSENCRYPT_HOST=radarr.USERURL" \
 -e "LETSENCRYPT_EMAIL=USEREMAIL" \
