@@ -42,7 +42,7 @@ groupadd docker
 usermod -aG docker USERNAME
 
 # Secure fstab
-echo 'tmpfs /run/shm tmpfs defaults,noexec,nosuid 0 0' >> /etc/fstab
+#echo 'tmpfs /run/shm tmpfs defaults,noexec,nosuid 0 0' >> /etc/fstab
 
 # Prevent IP Spoofing
 #sed -i 's/order hosts,bind/order bind,hosts/' /etc/host.conf
