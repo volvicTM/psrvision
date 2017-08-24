@@ -169,9 +169,9 @@ docker run \
 -v /home/USERNAME/Plex:/transcode \
 -v /home/USERNAME/Plex:/data \
 -e "VIRTUAL_HOST=plex.USERURL" \
+-e "VIRTUAL_PORT=32400" \
 -e "LETSENCRYPT_HOST=plex.USERURL" \
 -e "LETSENCRYPT_EMAIL=USEREMAIL" \
---expose=32400 \
 plexinc/pms-docker
 sleep 5
 
@@ -180,7 +180,7 @@ docker run \
 -d \
 --name sonarr \
 -p 8989:8989 \
---expose=8989 \
+-e "VIRTUAL_PORT=8989" \
 -e PUID=1000 -e PGID=1000 \
 -e TZ=Europe/London \
 -v /etc/localtime:/etc/localtime:ro \
@@ -206,7 +206,7 @@ docker run \
 -e TZ=Europe/London \
 -e PGID=1000 -e PUID=1000  \
 -p 7878:7878 \
---expose=7878 \
+-e "VIRTUAL_PORT=7878" \
 -e "VIRTUAL_HOST=radarr.USERURL" \
 -e "LETSENCRYPT_HOST=radarr.USERURL" \
 -e "LETSENCRYPT_EMAIL=USEREMAIL" \
@@ -224,7 +224,7 @@ docker run \
 -e PGID=1000 -e PUID=1000 \
 -e TZ=Europe/London \
 -p 8080:8080 \
---expose=8080 \
+-e "VIRTUAL_PORT=8080" \
 -e "VIRTUAL_HOST=sabnzbd.USERURL" \
 -e "LETSENCRYPT_HOST=sabnzbd.USERURL" \
 -e "LETSENCRYPT_EMAIL=USEREMAIL" \
@@ -241,7 +241,7 @@ docker run \
 -e PGID=1000 -e PUID=1000 \
 -e TZ=Europe/London \
 -p 5075:5075 \
---expose=5075 \
+-e "VIRTUAL_PORT=32400" \
 -e "VIRTUAL_HOST=hydra.USERURL" \
 -e "LETSENCRYPT_HOST=hydra.USERURL" \
 -e "LETSENCRYPT_EMAIL=USEREMAIL" \
