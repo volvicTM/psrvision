@@ -42,15 +42,12 @@ groupadd docker
 usermod -aG docker USERNAME
 
 # Secure fstab
-#echo 'tmpfs /run/shm tmpfs defaults,noexec,nosuid 0 0' >> /etc/fstab
+echo 'tmpfs /run/shm tmpfs defaults,noexec,nosuid 0 0' >> /etc/fstab
 
 # Prevent IP Spoofing
-#sed -i 's/order hosts,bind/order bind,hosts/' /etc/host.conf
-#sed -i 's/multi on/nospoof on/' /etc/host.conf
+sed -i 's/order hosts,bind/order bind,hosts/' /etc/host.conf
+sed -i 's/multi on/nospoof on/' /etc/host.conf
 echo "- Complete"
-# Get Domain and write to install scripts
-read -p "Go to plex.tv/claim and copy and paste code here: " uclaim
-sed -i~ -e "s/USERCLAIM/${uclaim}/g" appinstall.sh
 echo
 echo "Please record your username and password. (You may change the password at any time!)"
 echo
