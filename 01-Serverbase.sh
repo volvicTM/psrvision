@@ -91,6 +91,10 @@ echo "- Complete"
 # Disable UFW
 ufw disable
 
+# Get Plex Claim Code
+read -p "Please go to plex.tv/claim and copy and paste the code below: " upclaim
+sed -i~ -e "s/USERPCLAIM/${upclaim}/g" 02-Appsetup.sh
+
 echo
 echo "Please record your username and password. (You may change the password at any time!)"
 echo
