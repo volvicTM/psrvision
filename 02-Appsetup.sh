@@ -43,7 +43,7 @@ Plex_Crypt: /home/USERNAME/Plex/Media &
 exit
 EOM
 
-# Sonarr
+# Sonarr Mount
 /bin/cat <<EOM >/home/USERNAME/Scripts/sonarrmount.sh
 #! /bin/bash
 
@@ -67,7 +67,33 @@ unionfs-fuse -o cow,allow_other /home/USERNAME/Sonarr/local=RW:/home/USERNAME/So
 exit
 EOM
 
-# Radarr
+
+# Sonarr Upload to Google Drive Script
+/bin/cat <<EOM >/home/USERNAME/Scripts/uploadtv.sh
+#! /bin/bash
+
+#Check if script is already running
+if pidof -o %PPID -x "uploadtv.sh"; then
+   exit 1
+fi
+
+#Variables
+LOGFILE="/Scripts/logs/uploadtv.txt"
+FROM="/config/local/"
+TO="Sonarr_Crypt:/"
+
+#Upload to Google Drive
+echo "$(date "+%d.%m.%Y %T") RCLONE UPLOAD STARTED" | tee -a $LOGFILE
+/rclone move --config=/rcloneconf/rclone.conf $FROM $TO -c --no-traverse --transfers=2 --checkers=2 --delete-after --log-file=$LOGFILE
+echo "$(date "+%d.%m.%Y %T") RCLONE UPLOAD ENDED" | tee -a $LOGFILE
+sleep 30s
+
+# Remove Empty Folders
+find "/config/local/" -mindepth 1 -type d -empty -delete
+exit
+EOM
+
+# Radarr Mount
 /bin/cat <<EOM >/home/USERNAME/Scripts/radarrmount.sh
 #! /bin/bash
 
@@ -88,6 +114,31 @@ Radarr_Crypt: /home/USERNAME/Radarr/gdrive &
 #UnionFuse Local and gdrive into Media
 unionfs-fuse -o cow,allow_other /home/USERNAME/Radarr/local=RW:/home/USERNAME/Radarr/gdrive=RO /home/USERNAME/Radarr/Media/
 
+exit
+EOM
+
+# Radarr Upload to Google Drive Script
+/bin/cat <<EOM >/home/USERNAME/Scripts/uploadfilm.sh
+#! /bin/bash
+
+#Check if script is already running
+if pidof -o %PPID -x "uploadfilm.sh"; then
+   exit 1
+fi
+
+#Variables
+LOGFILE="/Scripts/logs/uploadfilm.txt"
+FROM="/config/local/"
+TO="Radarr_Crypt:/"
+
+#Upload to Google Drive
+echo "$(date "+%d.%m.%Y %T") RCLONE UPLOAD STARTED" | tee -a $LOGFILE
+/rclone move --config=/rcloneconf/rclone.conf $FROM $TO -c --no-traverse --transfers=2 --checkers=2 --delete-after --log-file=$LOGFILE
+echo "$(date "+%d.%m.%Y %T") RCLONE UPLOAD ENDED" | tee -a $LOGFILE
+sleep 30s
+
+# Remove Empty Folders
+find "/config/local/" -mindepth 1 -type d -empty -delete
 exit
 EOM
 
@@ -142,7 +193,7 @@ docker create \
 -e SUBDOMAINS=plex \
 -p 443:443 \
 -e TZ=Europe/London \
-linuxserver/letsencrypt
+linuxserver/letsencrypt > /dev/null
 sleep 2
 
 # Sonarr Container
@@ -158,7 +209,7 @@ docker create \
 -v /usr/bin/rclone:/rclone \
 -v /home/USERNAME/.config/rclone:/rcloneconf \
 -v /home/USERNAME/Scripts:/Scripts
-linuxserver/sonarr
+linuxserver/sonarr > /dev/null
 sleep 2
 
 # Radarr Container
@@ -174,7 +225,7 @@ docker create \
 -v /home/USERNAME/Scripts:/Scripts
 -e TZ=Europe/London \
 -e PGID=1000 -e PUID=1000  \
-linuxserver/radarr
+linuxserver/radarr > /dev/null
 sleep 2
 
 # NZBGet Container
@@ -186,7 +237,7 @@ docker create \
 -v /home/USERNAME/Nzbget:/config \
 -v /home/USERNAME/Nzbget/completed:/downloads \
 -v /home/USERNAME/Scripts:/Scripts
-linuxserver/nzbget
+linuxserver/nzbget > /dev/null
 sleep 2
 
 # NZBHydra Container
@@ -198,7 +249,7 @@ docker create \
 -v /home/USERNAME/Scripts:/Scripts
 -e PGID=1000 -e PUID=1000 \
 -e TZ=Europe/London \
-linuxserver/hydra
+linuxserver/hydra > /dev/null
 sleep 2
 
 # Plex Container
@@ -212,7 +263,7 @@ docker create \
 -v /home/USERNAME/Plex:/transcode \
 -v /home/USERNAME/Plex:/data \
 -v /home/USERNAME/Scripts:/Scripts
-plexinc/pms-docker
+plexinc/pms-docker > /dev/null
 sleep 2
 
 echo "- Complete"
