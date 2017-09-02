@@ -62,7 +62,7 @@ EOM
 Sonarr_Crypt: /home/USERNAME/Sonarr/gdrive &
 
 #UnionFuse Local and gdrive into Media
-unionfs-fuse -o cow,allow_other /home/USERNAME/Sonarr/local=RW:/home/USERNAME/Sonarr/gdrive=RO /home/USERNAME/Sonarr/Media/
+unionfs-fuse -o cow,allow_other,direct_io,auto_cache,sync_read /home/USERNAME/Sonarr/local=RW:/home/USERNAME/Sonarr/gdrive=RO /home/USERNAME/Sonarr/Media/
 
 exit
 EOM
@@ -112,7 +112,7 @@ EOM
 Radarr_Crypt: /home/USERNAME/Radarr/gdrive &
 
 #UnionFuse Local and gdrive into Media
-unionfs-fuse -o cow,allow_other /home/USERNAME/Radarr/local=RW:/home/USERNAME/Radarr/gdrive=RO /home/USERNAME/Radarr/Media/
+unionfs-fuse -o cow,allow_other,direct_io,auto_cache,sync_read /home/USERNAME/Radarr/local=RW:/home/USERNAME/Radarr/gdrive=RO /home/USERNAME/Radarr/Media/
 
 exit
 EOM
