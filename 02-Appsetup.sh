@@ -186,7 +186,7 @@ docker create \
 --privileged \
 --name=letsencrypt \
 --network=isolated \
--v /home/USERNAME/proxy:/config \
+-v /home/USERNAME/Proxy:/config \
 -e PGID=1000 -e PUID=1000  \
 -e EMAIL=USEREMAIL \
 -e URL=USERURL \
@@ -194,7 +194,7 @@ docker create \
 -p 443:443 \
 -e TZ=Europe/London \
 linuxserver/letsencrypt > /dev/null
-sleep 2
+sleep 12
 
 # Sonarr Container
 docker create \
@@ -210,7 +210,7 @@ docker create \
 -v /home/USERNAME/.config/rclone:/rcloneconf \
 -v /home/USERNAME/Scripts:/Scripts
 linuxserver/sonarr > /dev/null
-sleep 2
+sleep 12
 
 # Radarr Container
 docker create \
@@ -226,7 +226,7 @@ docker create \
 -e TZ=Europe/London \
 -e PGID=1000 -e PUID=1000  \
 linuxserver/radarr > /dev/null
-sleep 2
+sleep 12
 
 # NZBGet Container
 docker create \
@@ -238,7 +238,7 @@ docker create \
 -v /home/USERNAME/Nzbget/completed:/downloads \
 -v /home/USERNAME/Scripts:/Scripts
 linuxserver/nzbget > /dev/null
-sleep 2
+sleep 12
 
 # NZBHydra Container
 docker create \
@@ -250,7 +250,7 @@ docker create \
 -e PGID=1000 -e PUID=1000 \
 -e TZ=Europe/London \
 linuxserver/hydra > /dev/null
-sleep 2
+sleep 12
 
 # Plex Container
 docker create \
@@ -264,7 +264,7 @@ docker create \
 -v /home/USERNAME/Plex:/data \
 -v /home/USERNAME/Scripts:/Scripts
 plexinc/pms-docker > /dev/null
-sleep 2
+sleep 12
 
 echo "- Complete"
 echo "Installation Complete. Please reboot"
