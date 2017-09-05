@@ -164,15 +164,15 @@ $(lsb_release -cs) \
 stable"
 sudo apt-get -y update > /dev/null
 sudo apt-get -y install docker-ce > /dev/null
-sudo systemctl enable docker
+sudo systemctl enable docker > /dev/null
 
 # Rclone
-wget https://downloads.rclone.org/rclone-current-linux-amd64.zip -P /home/USERNAME/Downloads
-unzip /home/USERNAME/Downloads/rclone*.zip -d /home/USERNAME/Downloads/
-sudo cp /home/USERNAME/Downloads/rclone*/rclone /usr/bin
-sudo chown root:root /usr/bin/rclone
-sudo chmod 755 /usr/bin/rclone
-rm -rf /home/USERNAME/Downloads/rclone*
+wget https://downloads.rclone.org/rclone-current-linux-amd64.zip -P /home/USERNAME/Downloads > /dev/null
+unzip /home/USERNAME/Downloads/rclone*.zip -d /home/USERNAME/Downloads/ > /dev/null
+sudo cp /home/USERNAME/Downloads/rclone*/rclone /usr/bin > /dev/null
+sudo chown root:root /usr/bin/rclone > /dev/null
+sudo chmod 755 /usr/bin/rclone > /dev/null
+rm -rf /home/USERNAME/Downloads/rclone* > /dev/null
 echo "- Complete"
 
 # Create isolated docker Network
@@ -208,7 +208,7 @@ docker create \
 -v /home/USERNAME/Nzbget/completed:/downloads \
 -v /usr/bin/rclone:/rclone \
 -v /home/USERNAME/.config/rclone:/rcloneconf \
--v /home/USERNAME/Scripts:/Scripts
+-v /home/USERNAME/Scripts:/Scripts \
 linuxserver/sonarr > /dev/null
 sleep 12
 
@@ -222,9 +222,9 @@ docker create \
 -v /usr/bin/rclone:/rclone \
 -v /home/USERNAME/.config/rclone:/rcloneconf \
 -v /etc/localtime:/etc/localtime:ro \
--v /home/USERNAME/Scripts:/Scripts
+-v /home/USERNAME/Scripts:/Scripts \
 -e TZ=Europe/London \
--e PGID=1000 -e PUID=1000  \
+-e PGID=1000 -e PUID=1000 \
 linuxserver/radarr > /dev/null
 sleep 12
 
@@ -236,7 +236,7 @@ docker create \
 -e TZ=Europe/London \
 -v /home/USERNAME/Nzbget:/config \
 -v /home/USERNAME/Nzbget/completed:/downloads \
--v /home/USERNAME/Scripts:/Scripts
+-v /home/USERNAME/Scripts:/Scripts \
 linuxserver/nzbget > /dev/null
 sleep 12
 
@@ -246,7 +246,7 @@ docker create \
 --network=isolated \
 -v /home/USERNAME/NzbHydra:/config \
 -v /home/USERNAME/Nzbget:/completed:/downloads \
--v /home/USERNAME/Scripts:/Scripts
+-v /home/USERNAME/Scripts:/Scripts \
 -e PGID=1000 -e PUID=1000 \
 -e TZ=Europe/London \
 linuxserver/hydra > /dev/null
@@ -262,7 +262,7 @@ docker create \
 -v /home/USERNAME/Plex:/config \
 -v /home/USERNAME/Plex:/transcode \
 -v /home/USERNAME/Plex:/data \
--v /home/USERNAME/Scripts:/Scripts
+-v /home/USERNAME/Scripts:/Scripts \
 plexinc/pms-docker > /dev/null
 sleep 12
 
