@@ -38,8 +38,8 @@ sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd
 sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
 
 # adduser to docker group
-groupadd docker
-usermod -aG docker USERNAME
+groupadd docker > /dev/null
+usermod -aG docker USERNAME > /dev/null
 
 # Secure fstab
 echo 'tmpfs /run/shm tmpfs defaults,noexec,nosuid 0 0' >> /etc/fstab
