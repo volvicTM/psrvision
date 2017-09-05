@@ -2,13 +2,13 @@
 
 # Update Ubuntu
 echo "Updating Ubuntu..."
-apt-get update > /dev/null
-apt-get -y upgrade > /dev/null
-apt-get -y dist-upgrade > /dev/null
+apt-get update > /dev/null 2>&1
+apt-get -y upgrade > /dev/null 2>&1
+apt-get -y dist-upgrade > /dev/null 2>&1
 echo "- Complete"
 echo "Cleaning Ubuntu..."
-apt-get -y autoremove > /dev/null
-apt-get clean > /dev/null
+apt-get -y autoremove > /dev/null 2>&1
+apt-get clean > /dev/null 2>&1
 apt-get purge -y $(dpkg -l | awk '/^rc/ { print $2 }')
 echo "- Complete"
 
@@ -89,7 +89,7 @@ sed -i 's/multi on/nospoof on/' /etc/host.conf
 echo "- Complete"
 
 # Disable UFW
-ufw disable
+ufw disable > /dev/null  2>&1
 
 # Get Plex Claim Code
 read -p "Please go to plex.tv/claim and copy and paste the code below: " upclaim
