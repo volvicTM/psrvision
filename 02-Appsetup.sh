@@ -16,6 +16,7 @@ mkdir /home/USERNAME/Radarr/local
 mkdir /home/USERNAME/Radarr/gdrive
 mkdir /home/USERNAME/Radarr/Media
 mkdir /home/USERNAME/Nzbget
+mkdir /home/USERNAME/Nzbget/completed
 mkdir /home/USERNAME/.config
 mkdir /home/USERNAME/.config/rclone
 mkdir /home/USERNAME/Proxy
@@ -148,7 +149,7 @@ echo "- Complete"
 
 # Install necessary Applications
 echo "Installing Apps"
-sudo apt-get -y install unzip fuse unionfs-fuse> /dev/null
+sudo apt-get -y install unzip fuse unionfs-fuse> /dev/null 2>&1
 sudo sed -i 's/#user_allow_other/user_allow_other/g' /etc/fuse.conf
 
 # Docker
@@ -156,23 +157,23 @@ sudo apt-get -y install \
 apt-transport-https \
 ca-certificates \
 curl \
-software-properties-common > /dev/null
+software-properties-common > /dev/null 2>&1
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository \
 "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
 $(lsb_release -cs) \
 stable"
-sudo apt-get -y update > /dev/null
-sudo apt-get -y install docker-ce > /dev/null
-sudo systemctl enable docker > /dev/null
+sudo apt-get -y update > /dev/null 2>&1
+sudo apt-get -y install docker-ce > /dev/null 2>&1
+sudo systemctl enable docker > /dev/null 2>&1
 
 # Rclone
-wget https://downloads.rclone.org/rclone-current-linux-amd64.zip -P /home/USERNAME/Downloads > /dev/null
-unzip /home/USERNAME/Downloads/rclone*.zip -d /home/USERNAME/Downloads/ > /dev/null
-sudo cp /home/USERNAME/Downloads/rclone*/rclone /usr/bin > /dev/null
-sudo chown root:root /usr/bin/rclone > /dev/null
-sudo chmod 755 /usr/bin/rclone > /dev/null
-rm -rf /home/USERNAME/Downloads/rclone* > /dev/null
+wget https://downloads.rclone.org/rclone-current-linux-amd64.zip -P /home/USERNAME/Downloads > /dev/null 2>&1
+unzip /home/USERNAME/Downloads/rclone*.zip -d /home/USERNAME/Downloads/ > /dev/null 2>&1
+sudo cp /home/USERNAME/Downloads/rclone*/rclone /usr/bin > /dev/null 2>&1
+sudo chown root:root /usr/bin/rclone > /dev/null 2>&1
+sudo chmod 755 /usr/bin/rclone > /dev/null 2>&1
+rm -rf /home/USERNAME/Downloads/rclone* > /dev/null 2>&1
 echo "- Complete"
 
 # Create isolated docker Network
@@ -193,7 +194,7 @@ docker create \
 -e SUBDOMAINS=plex \
 -p 443:443 \
 -e TZ=Europe/London \
-linuxserver/letsencrypt > /dev/null
+linuxserver/letsencrypt > /dev/null 2>&1
 sleep 12
 
 # Sonarr Container
@@ -209,7 +210,7 @@ docker create \
 -v /usr/bin/rclone:/rclone \
 -v /home/USERNAME/.config/rclone:/rcloneconf \
 -v /home/USERNAME/Scripts:/Scripts \
-linuxserver/sonarr > /dev/null
+linuxserver/sonarr > /dev/null 2>&1
 sleep 12
 
 # Radarr Container
@@ -225,7 +226,7 @@ docker create \
 -v /home/USERNAME/Scripts:/Scripts \
 -e TZ=Europe/London \
 -e PGID=1000 -e PUID=1000 \
-linuxserver/radarr > /dev/null
+linuxserver/radarr > /dev/null 2>&1
 sleep 12
 
 # NZBGet Container
@@ -237,7 +238,7 @@ docker create \
 -v /home/USERNAME/Nzbget:/config \
 -v /home/USERNAME/Nzbget/completed:/downloads \
 -v /home/USERNAME/Scripts:/Scripts \
-linuxserver/nzbget > /dev/null
+linuxserver/nzbget > /dev/null 2>&1
 sleep 12
 
 # NZBHydra Container
@@ -249,7 +250,7 @@ docker create \
 -v /home/USERNAME/Scripts:/Scripts \
 -e PGID=1000 -e PUID=1000 \
 -e TZ=Europe/London \
-linuxserver/hydra > /dev/null
+linuxserver/hydra > /dev/null 2>&1
 sleep 12
 
 # Plex Container
@@ -263,7 +264,7 @@ docker create \
 -v /home/USERNAME/Plex:/transcode \
 -v /home/USERNAME/Plex:/data \
 -v /home/USERNAME/Scripts:/Scripts \
-plexinc/pms-docker > /dev/null
+plexinc/pms-docker > /dev/null 2>&1
 sleep 12
 
 echo "- Complete"
