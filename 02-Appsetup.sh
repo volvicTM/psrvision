@@ -266,8 +266,45 @@ docker create \
 -v /home/USERNAME/Scripts:/Scripts \
 plexinc/pms-docker > /dev/null 2>&1
 sleep 12
-
 echo "- Complete"
+
+# Configure Dockers and Proxy
+# Start dockers to build configuration files
+docker start letsencrypt
+sleep 12
+docker start nzbget
+sleep 12
+docker start sonarr
+sleep 12
+docker start radarr
+sleep 12
+docker start hydra
+sleep 12
+docker start plex
+sleep 12
+
+# Configure Sonarr
+sudo rm /home/USERNAME/Sonarr/config.xml
+/bin/cat <<EOM >/home/USERNAME/Sonarr/config.xml
+<Config>
+  <LogLevel>Info</LogLevel>
+  <Port>8989</Port>
+  <UrlBase>/tv</UrlBase>
+  <BindAddress>*</BindAddress>
+  <SslPort>9898</SslPort>
+  <EnableSsl>False</EnableSsl>
+  <ApiKey></ApiKey>
+  <AuthenticationMethod>None</AuthenticationMethod>
+  <Branch>master</Branch>
+  <LaunchBrowser>True</LaunchBrowser>
+  <SslCertHash></SslCertHash>
+  <UpdateMechanism>BuiltIn</UpdateMechanism>
+  <AnalyticsEnabled>False</AnalyticsEnabled>
+</Config>
+EOM
+
+# Configure Radarr
+
 echo "Installation Complete. Please reboot"
 
 exit
