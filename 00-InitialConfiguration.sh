@@ -18,7 +18,7 @@ sed -i~ -e "s/USEREMAIL/${uemail}/g" 02-Appsetup.sh
 read -p "Please enter a username to access the websites, (like sonarr and radarr): " unginx
 sed -i~ -e "s/USERBASICAUTH/${unginx}/g" 02-Appsetup.sh
 
-chmod +x /home/root/psrvision/01-Serverbase.sh
-chmod +x /home/root/psrvision/02-Appsetup.sh
+chmod +x /root/psrvision/01-Serverbase.sh
+chmod +x /root/psrvision/02-Appsetup.sh
 
 exit
