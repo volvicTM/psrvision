@@ -246,7 +246,7 @@ docker create \
 --name=hydra \
 --network=isolated \
 -v /home/USERNAME/NzbHydra:/config \
--v /home/USERNAME/Nzbget:/completed:/downloads \
+-v /home/USERNAME/Nzbget/completed:/downloads \
 -v /home/USERNAME/Scripts:/Scripts \
 -e PGID=1000 -e PUID=1000 \
 -e TZ=Europe/London \
@@ -302,8 +302,31 @@ sudo rm /home/USERNAME/Sonarr/config.xml
   <AnalyticsEnabled>False</AnalyticsEnabled>
 </Config>
 EOM
+docker restart sonarr
+sleep 12
 
 # Configure Radarr
+sudo rm /home/USERNAME/Sonarr/config.xml
+/bin/cat <<EOM >/home/USERNAME/Radarr/config.xml
+<Config>
+  <LogLevel>Info</LogLevel>
+  <Port>7878</Port>
+  <UrlBase>/film</UrlBase>
+  <BindAddress>*</BindAddress>
+  <SslPort>9898</SslPort>
+  <EnableSsl>False</EnableSsl>
+  <ApiKey></ApiKey>
+  <AuthenticationMethod>None</AuthenticationMethod>
+  <Branch>develop</Branch>
+  <LaunchBrowser>True</LaunchBrowser>
+  <SslCertHash></SslCertHash>
+  <UpdateMechanism>BuiltIn</UpdateMechanism>
+  <AnalyticsEnabled>False</AnalyticsEnabled>
+</Config>
+EOM
+docker restart radarr
+sleep 12
+
 
 echo "Installation Complete. Please reboot"
 
