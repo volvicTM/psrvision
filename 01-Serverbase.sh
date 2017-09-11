@@ -43,9 +43,9 @@ usermod -aG docker USERNAME > /dev/null
 
 # Get UID and GID
 id -u USERNAME
-echo -p "Please enter the above number, exactly as you see it: " uuid
+read -p "Please enter the above number (UID), exactly as you see it: " uuid
 id -g USERNAME
-echo -p "Please enter the above number, exactly as you see it: " ugid
+read -p "Please enter the above number (GID), exactly as you see it: " ugid
 sed -i~ -e "s/USERUID/${uuid}/g" 02-Appsetup.sh
 sed -i~ -e "s/USERGID/${ugid}/g" 02-Appsetup.sh
 
