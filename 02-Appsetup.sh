@@ -431,6 +431,8 @@ server {
 	}
 }
 EOM
+docker restart letsencrypt
+sleep 12
 
 # Configure Sonarr
 sudo rm /home/USERNAME/Sonarr/config.xml
@@ -481,6 +483,20 @@ sed -i~ -e 's="urlBase": null,="urlBase": /hydra,=g' /home/USERNAME/NzbHydra/hyd
 docker restart hydra
 sleep 12
 
-echo "Installation Complete. Please reboot"
+echo
+echo "Please record your username and password. (You may change the password at any time!)"
+echo
+echo "****************************"
+echo "*** Username for website login:  USERBASICAUTH"
+echo "*** Use the password you created earlier"
+echo "*** URL's to access services: "
+echo "*** Sonarr: USERURL/tv"
+echo "*** Radarr: USERURL/film"
+echo "*** Nzbget: USERURL/nzbget"
+echo "*** Hydra: USERURL/hydra"
+echo "*** Plex: plex.USERURL"
+echo "****************************"
+echo
+echo "Installation Complete. Please reboot and run the startservices.sh script"
 
 exit
