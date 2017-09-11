@@ -188,20 +188,20 @@ docker create \
 --name=letsencrypt \
 --network=isolated \
 -v /home/USERNAME/Proxy:/config \
--e PGID=1000 -e PUID=1000  \
+-e PGID=USERGID -e PUID=USERUID  \
 -e EMAIL=USEREMAIL \
 -e URL=USERURL \
 -e SUBDOMAINS=plex \
 -p 443:443 \
 -e TZ=Europe/London \
 linuxserver/letsencrypt > /dev/null 2>&1
-sleep 12
+sleep 10
 
 # Sonarr Container
 docker create \
 --name sonarr \
 --network=isolated \
--e PUID=1000 -e PGID=1000 \
+-e PUID=USERUID -e PGID=USERGID \
 -e TZ=Europe/London \
 -v /etc/localtime:/etc/localtime:ro \
 -v /home/USERNAME/Sonarr:/config \
@@ -211,7 +211,7 @@ docker create \
 -v /home/USERNAME/.config/rclone:/rcloneconf \
 -v /home/USERNAME/Scripts:/Scripts \
 linuxserver/sonarr > /dev/null 2>&1
-sleep 12
+sleep 10
 
 # Radarr Container
 docker create \
@@ -225,21 +225,21 @@ docker create \
 -v /etc/localtime:/etc/localtime:ro \
 -v /home/USERNAME/Scripts:/Scripts \
 -e TZ=Europe/London \
--e PGID=1000 -e PUID=1000 \
+-e PGID=USERGID -e PUID=USERUID \
 linuxserver/radarr > /dev/null 2>&1
-sleep 12
+sleep 10
 
 # NZBGet Container
 docker create \
 --name nzbget \
 --network=isolated \
--e PUID=1000 -e PGID=1000 \
+-e PUID=USERUID -e PGID=USERGID \
 -e TZ=Europe/London \
 -v /home/USERNAME/Nzbget:/config \
 -v /home/USERNAME/Nzbget/completed:/downloads \
 -v /home/USERNAME/Scripts:/Scripts \
 linuxserver/nzbget > /dev/null 2>&1
-sleep 12
+sleep 10
 
 # NZBHydra Container
 docker create \
@@ -248,16 +248,16 @@ docker create \
 -v /home/USERNAME/NzbHydra:/config \
 -v /home/USERNAME/Nzbget/completed:/downloads \
 -v /home/USERNAME/Scripts:/Scripts \
--e PGID=1000 -e PUID=1000 \
+-e PGID=USERGID -e PUID=USERUID \
 -e TZ=Europe/London \
 linuxserver/hydra > /dev/null 2>&1
-sleep 12
+sleep 10
 
 # Plex Container
 docker create \
 --name plex \
 --network=isolated \
--e PLEX_UID=1000 -e PLEX_GID=1000 \
+-e PLEX_UID=USERUID -e PLEX_GID=USERGID \
 -e TZ=Europe/London \
 -e PLEX_CLAIM="USERPCLAIM" \
 -v /home/USERNAME/Plex:/config \
@@ -265,23 +265,23 @@ docker create \
 -v /home/USERNAME/Plex:/data \
 -v /home/USERNAME/Scripts:/Scripts \
 plexinc/pms-docker > /dev/null 2>&1
-sleep 12
+sleep 10
 echo "- Complete"
 
 # Configure Dockers and Proxy
 # Start dockers to build configuration files
 docker start letsencrypt
-sleep 12
+sleep 10
 docker start nzbget
-sleep 12
+sleep 5
 docker start sonarr
-sleep 12
+sleep 5
 docker start radarr
-sleep 12
+sleep 5
 docker start hydra
-sleep 12
+sleep 5
 docker start plex
-sleep 12
+sleep 5
 
 # Configure Lets Encrypt
 echo "Please enter password to access restricted sites (sonarr, radarr, nzbget and hydra)"
@@ -432,7 +432,7 @@ server {
 }
 EOM
 docker restart letsencrypt
-sleep 12
+sleep 5
 
 # Configure Sonarr
 sudo rm /home/USERNAME/Sonarr/config.xml
@@ -454,7 +454,7 @@ sudo rm /home/USERNAME/Sonarr/config.xml
 </Config>
 EOM
 docker restart sonarr
-sleep 12
+sleep 5
 
 # Configure Radarr
 sudo rm /home/USERNAME/Sonarr/config.xml
@@ -476,12 +476,12 @@ sudo rm /home/USERNAME/Sonarr/config.xml
 </Config>
 EOM
 docker restart radarr
-sleep 12
+sleep 5
 
 # Configure Hydra
 sed -i~ -e 's="urlBase": null,="urlBase": /hydra,=g' /home/USERNAME/NzbHydra/hydra/settings.cfg
 docker restart hydra
-sleep 12
+sleep 5
 
 echo
 echo "Please record your username and password. (You may change the password at any time!)"
@@ -498,5 +498,6 @@ echo "*** Plex: plex.USERURL"
 echo "****************************"
 echo
 echo "Installation Complete. Please reboot and run the startservices.sh script"
+sudo rm -rf /home/USERNAME/psrvision
 
 exit
