@@ -41,6 +41,14 @@ sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
 groupadd docker > /dev/null
 usermod -aG docker USERNAME > /dev/null
 
+# Get UID and GID
+id -u USERNAME
+echo -p "Please enter the above number, exactly as you see it: " uuid
+id -g USERNAME
+echo -p "Please enter the above number, exactly as you see it: " ugid
+sed -i~ -e "s/USERUID/${uuid}/g" 02-Appsetup.sh
+sed -i~ -e "s/USERGID/${ugid}/g" 02-Appsetup.sh
+
 # Secure fstab
 echo 'tmpfs /run/shm tmpfs defaults,noexec,nosuid 0 0' >> /etc/fstab
 
