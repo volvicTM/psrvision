@@ -270,17 +270,17 @@ echo "- Complete"
 
 # Configure Dockers and Proxy
 # Start dockers to build configuration files
-docker start letsencrypt
+docker start letsencrypt > /dev/null 2>&1
 sleep 10
-docker start nzbget
+docker start nzbget > /dev/null 2>&1
 sleep 5
-docker start sonarr
+docker start sonarr > /dev/null 2>&1
 sleep 5
-docker start radarr
+docker start radarr > /dev/null 2>&1
 sleep 5
-docker start hydra
+docker start hydra > /dev/null 2>&1
 sleep 5
-docker start plex
+docker start plex > /dev/null 2>&1
 sleep 5
 
 # Configure Lets Encrypt
@@ -288,7 +288,7 @@ echo "Please enter password to access restricted sites (sonarr, radarr, nzbget a
 docker exec -it letsencrypt htpasswd -c /config/nginx/.htpasswd USERBASICAUTH
 sudo rm /home/USERNAME/Proxy/nginx/site-confs/default
 sudo cp /home/USERNAME/psrvision/Scripts/default /home/USERNAME/Proxy/nginx/site-confs/default
-docker restart letsencrypt
+docker restart letsencrypt > /dev/null 2>&1
 sleep 5
 
 # Configure Sonarr
@@ -310,7 +310,7 @@ sudo rm /home/USERNAME/Sonarr/config.xml
   <AnalyticsEnabled>False</AnalyticsEnabled>
 </Config>
 EOM
-docker restart sonarr
+docker restart sonarr > /dev/null 2>&1
 sleep 5
 
 # Configure Radarr
@@ -332,19 +332,20 @@ sudo rm /home/USERNAME/Sonarr/config.xml
   <AnalyticsEnabled>False</AnalyticsEnabled>
 </Config>
 EOM
-docker restart radarr
+docker restart radarr > /dev/null 2>&1
 sleep 5
 
 # Configure Hydra
 sed -i~ -e 's="urlBase": null,="urlBase": "/hydra",=g' /home/USERNAME/NzbHydra/hydra/settings.cfg
-docker restart hydra
+docker restart hydra > /dev/null 2>&1
 sleep 5
 
 # Configure Nzbget
 sed -i 's/ControlUsername=nzbget/ControlUsername=/' /home/USERNAME/Nzbget/nzbget.conf
 sed -i 's/ControlPassword=tegbzn6789/ControlPassword=/' /home/USERNAME/Nzbget/nzbget.conf
-docker restart nzbget
+docker restart nzbget > /dev/null 2>&1
 
+docker stop $(docker ps -a -q) > /dev/null 2>&1
 echo
 echo "Please record your username and password. (You may change the password at any time!)"
 echo
@@ -352,11 +353,11 @@ echo "****************************"
 echo "*** Username for website login:  USERBASICAUTH"
 echo "*** Use the password you created earlier"
 echo "*** URL's to access services: "
-echo "*** Sonarr: USERURL/tv"
-echo "*** Radarr: USERURL/film"
-echo "*** Nzbget: USERURL/nzbget"
-echo "*** Hydra: USERURL/hydra"
-echo "*** Plex: plex.USERURL"
+echo "*** Sonarr: https://USERURL/tv"
+echo "*** Radarr: https://USERURL/film"
+echo "*** Nzbget: https://USERURL/nzbget"
+echo "*** Hydra:  https://USERURL/hydra"
+echo "*** Plex:   https://plex.USERURL"
 echo "****************************"
 echo
 echo "Installation Complete. Please reboot and run the StartServices.sh script"
