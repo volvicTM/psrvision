@@ -9,6 +9,7 @@ sed -i~ -e "s/USERNAME/${uname}/g" 03-StartServices.sh
 # Get Domain and write to install scripts
 read -p "Please enter a your Domain name (e.g. mydomain.tv): " uurl
 sed -i~ -e "s/USERURL/${uurl}/g" 02-Appsetup.sh
+sed -i~ -e "s/USERURL/${uurl}/g" Scripts/default
 
 # Get Email and write to install scripts
 read -p "Please enter a email address for let's encrypt: " uemail
