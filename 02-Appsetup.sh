@@ -336,13 +336,13 @@ docker restart radarr
 sleep 5
 
 # Configure Hydra
-sed -i~ -e 's="urlBase": null,="urlBase": /hydra,=g' /home/USERNAME/NzbHydra/hydra/settings.cfg
+sed -i~ -e 's="urlBase": null,="urlBase": "/hydra",=g' /home/USERNAME/NzbHydra/hydra/settings.cfg
 docker restart hydra
 sleep 5
 
 # Configure Nzbget
-sed -i 's/ControlUsername=nzbget/ControlUsername=/'/home/USERNAME/Nzbget/nzbget.conf
-sed -i 's/ControlPassword=tegbzn6789/ControlPassword=/'/home/USERNAME/Nzbget/nzbget.conf
+sed -i 's/ControlUsername=nzbget/ControlUsername=/' /home/plex/Nzbget/nzbget.conf
+sed -i 's/ControlPassword=tegbzn6789/ControlPassword=/' /home/plex/Nzbget/nzbget.conf
 docker restart nzbget
 
 echo
