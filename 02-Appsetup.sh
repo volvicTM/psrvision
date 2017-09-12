@@ -206,7 +206,7 @@ docker create \
 -v /etc/localtime:/etc/localtime:ro \
 -v /home/USERNAME/Sonarr:/config \
 -v /home/USERNAME/Sonarr/Media:/tv \
--v /home/USERNAME/Nzbget/completed:/downloads \
+-v /home/USERNAME/Nzbget:/downloads \
 -v /usr/bin/rclone:/rclone \
 -v /home/USERNAME/.config/rclone:/rcloneconf \
 -v /home/USERNAME/Scripts:/Scripts \
@@ -218,7 +218,7 @@ docker create \
 --name=radarr \
 --network=isolated \
 -v /home/USERNAME/Radarr:/config \
--v /home/USERNAME/Nzbget/completed:/downloads \
+-v /home/USERNAME/Nzbget:/downloads \
 -v /home/USERNAME/Radarr/Media:/movies \
 -v /usr/bin/rclone:/rclone \
 -v /home/USERNAME/.config/rclone:/rcloneconf \
@@ -236,7 +236,7 @@ docker create \
 -e PUID=USERUID -e PGID=USERGID \
 -e TZ=Europe/London \
 -v /home/USERNAME/Nzbget:/config \
--v /home/USERNAME/Nzbget/completed:/downloads \
+-v /home/USERNAME/Nzbget:/downloads \
 -v /home/USERNAME/Scripts:/Scripts \
 linuxserver/nzbget > /dev/null 2>&1
 sleep 10
@@ -246,7 +246,7 @@ docker create \
 --name=hydra \
 --network=isolated \
 -v /home/USERNAME/NzbHydra:/config \
--v /home/USERNAME/Nzbget/completed:/downloads \
+-v /home/USERNAME/Nzbget:/downloads \
 -v /home/USERNAME/Scripts:/Scripts \
 -e PGID=USERGID -e PUID=USERUID \
 -e TZ=Europe/London \
