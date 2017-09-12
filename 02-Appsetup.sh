@@ -359,7 +359,8 @@ echo "*** Hydra: USERURL/hydra"
 echo "*** Plex: plex.USERURL"
 echo "****************************"
 echo
-echo "Installation Complete. Please reboot and run the startservices.sh script"
+echo "Installation Complete. Please reboot and run the StartServices.sh script"
+cp /home/USERNAME/psrvision/03-StartServices.sh /home/USERNAME/Scripts/03-StartServices.sh
 sudo rm -rf /home/USERNAME/psrvision
 
 exit
