@@ -8,7 +8,10 @@ sleep 2
 sh /home/USERNAME/Scripts/plexmount.sh
 sleep 2
 
-# Start Dockers in Proxy Order
+# Stop all running Containers
+docker stop $(docker ps -a -q) > /dev/null 2>&1
+
+# Start Containers in Proxy Order
 docker start letsencrypt
 sleep 3
 docker start nzbget
