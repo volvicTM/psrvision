@@ -17,6 +17,7 @@ mkdir /home/USERNAME/Radarr/gdrive
 mkdir /home/USERNAME/Radarr/Media
 mkdir /home/USERNAME/Nzbget
 mkdir /home/USERNAME/Nzbget/completed
+mkdir /home/USERNAME/NzbHydra
 mkdir /home/USERNAME/.config
 mkdir /home/USERNAME/.config/rclone
 mkdir /home/USERNAME/Proxy
@@ -195,7 +196,7 @@ docker create \
 -p 443:443 \
 -e TZ=Europe/London \
 linuxserver/letsencrypt > /dev/null 2>&1
-sleep 10
+sleep 15
 
 # Sonarr Container
 docker create \
@@ -211,7 +212,7 @@ docker create \
 -v /home/USERNAME/.config/rclone:/rcloneconf \
 -v /home/USERNAME/Scripts:/Scripts \
 linuxserver/sonarr > /dev/null 2>&1
-sleep 10
+sleep 15
 
 # Radarr Container
 docker create \
@@ -227,7 +228,7 @@ docker create \
 -e TZ=Europe/London \
 -e PGID=USERGID -e PUID=USERUID \
 linuxserver/radarr > /dev/null 2>&1
-sleep 10
+sleep 15
 
 # NZBGet Container
 docker create \
@@ -239,7 +240,7 @@ docker create \
 -v /home/USERNAME/Nzbget:/downloads \
 -v /home/USERNAME/Scripts:/Scripts \
 linuxserver/nzbget > /dev/null 2>&1
-sleep 10
+sleep 15
 
 # NZBHydra Container
 docker create \
@@ -251,7 +252,7 @@ docker create \
 -e PGID=USERGID -e PUID=USERUID \
 -e TZ=Europe/London \
 linuxserver/hydra > /dev/null 2>&1
-sleep 10
+sleep 15
 
 # Plex Container
 docker create \
@@ -269,6 +270,7 @@ sleep 10
 echo "- Complete"
 
 # Configure Dockers and Proxy
+echo "Configuring Containers"
 # Start dockers to build configuration files
 docker start letsencrypt > /dev/null 2>&1
 sleep 10
@@ -346,7 +348,7 @@ sed -i 's/ControlPassword=tegbzn6789/ControlPassword=/' /home/USERNAME/Nzbget/nz
 docker restart nzbget > /dev/null 2>&1
 
 docker stop $(docker ps -a -q) > /dev/null 2>&1
-echo
+echo "- Complete"
 echo "Please record your username and password. (You may change the password at any time!)"
 echo
 echo "****************************"
@@ -361,7 +363,7 @@ echo "*** Plex:   https://plex.USERURL"
 echo "****************************"
 echo
 echo "Installation Complete. Please reboot and run the StartServices.sh script"
-cp /home/USERNAME/psrvision/03-StartServices.sh /home/USERNAME/Scripts/03-StartServices.sh
+cp /home/USERNAME/psrvision/03-StartServices.sh /home/USERNAME/Scripts/StartServices.sh
 sudo rm -rf /home/USERNAME/psrvision
 
 exit
