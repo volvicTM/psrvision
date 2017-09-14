@@ -363,7 +363,7 @@ echo "*** Plex:   https://plex.USERURL"
 echo "****************************"
 echo
 echo "Installation Complete. Please reboot and run the StartServices.sh script"
-cp /home/USERNAME/psrvision/03-StartServices.sh /home/USERNAME/Scripts/StartServices.sh
+cp /home/USERNAME/psrvision/Scripts/StartServices.sh /home/USERNAME/Scripts/StartServices.sh
 sudo rm -rf /home/USERNAME/psrvision
 
 exit
