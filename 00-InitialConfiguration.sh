@@ -4,7 +4,7 @@
 read -p "Please enter a username: " uname
 sed -i~ -e "s/USERNAME/${uname}/g" 01-Serverbase.sh
 sed -i~ -e "s/USERNAME/${uname}/g" 02-Appsetup.sh
-sed -i~ -e "s/USERNAME/${uname}/g" 03-StartServices.sh
+sed -i~ -e "s/USERNAME/${uname}/g" Scripts/StartServices.sh
 
 # Get Domain and write to install scripts
 read -p "Please enter a your Domain name (e.g. mydomain.tv): " uurl
