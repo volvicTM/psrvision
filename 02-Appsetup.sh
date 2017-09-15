@@ -206,7 +206,7 @@ docker create \
 -e TZ=Europe/London \
 -v /etc/localtime:/etc/localtime:ro \
 -v /home/USERNAME/Sonarr:/config \
--v /home/USERNAME/Sonarr/Media:/tv \
+-v /home/USERNAME/Sonarr:/tv \
 -v /home/USERNAME/Nzbget:/downloads \
 -v /usr/bin/rclone:/rclone \
 -v /home/USERNAME/.config/rclone:/rcloneconf \
@@ -220,7 +220,7 @@ docker create \
 --network=isolated \
 -v /home/USERNAME/Radarr:/config \
 -v /home/USERNAME/Nzbget:/downloads \
--v /home/USERNAME/Radarr/Media:/movies \
+-v /home/USERNAME/Radarr:/movies \
 -v /usr/bin/rclone:/rclone \
 -v /home/USERNAME/.config/rclone:/rcloneconf \
 -v /etc/localtime:/etc/localtime:ro \
@@ -294,46 +294,12 @@ docker restart letsencrypt > /dev/null 2>&1
 sleep 5
 
 # Configure Sonarr
-sudo rm /home/USERNAME/Sonarr/config.xml
-/bin/cat <<EOM >/home/USERNAME/Sonarr/config.xml
-<Config>
-  <LogLevel>Info</LogLevel>
-  <Port>8989</Port>
-  <UrlBase>/tv</UrlBase>
-  <BindAddress>*</BindAddress>
-  <SslPort>9898</SslPort>
-  <EnableSsl>False</EnableSsl>
-  <ApiKey></ApiKey>
-  <AuthenticationMethod>None</AuthenticationMethod>
-  <Branch>master</Branch>
-  <LaunchBrowser>True</LaunchBrowser>
-  <SslCertHash></SslCertHash>
-  <UpdateMechanism>BuiltIn</UpdateMechanism>
-  <AnalyticsEnabled>False</AnalyticsEnabled>
-</Config>
-EOM
+sed -i~ -e 's=<UrlBase></UrlBase>=<UrlBase>/tv</UrlBase>,=g' /home/USERNAME/Sonarr/config.xml
 docker restart sonarr > /dev/null 2>&1
 sleep 5
 
 # Configure Radarr
-sudo rm /home/USERNAME/Sonarr/config.xml
-/bin/cat <<EOM >/home/USERNAME/Radarr/config.xml
-<Config>
-  <LogLevel>Info</LogLevel>
-  <Port>7878</Port>
-  <UrlBase>/film</UrlBase>
-  <BindAddress>*</BindAddress>
-  <SslPort>9898</SslPort>
-  <EnableSsl>False</EnableSsl>
-  <ApiKey></ApiKey>
-  <AuthenticationMethod>None</AuthenticationMethod>
-  <Branch>develop</Branch>
-  <LaunchBrowser>True</LaunchBrowser>
-  <SslCertHash></SslCertHash>
-  <UpdateMechanism>BuiltIn</UpdateMechanism>
-  <AnalyticsEnabled>False</AnalyticsEnabled>
-</Config>
-EOM
+sed -i~ -e 's=<UrlBase></UrlBase>=<UrlBase>/film</UrlBase>,=g' /home/USERNAME/Radarr/config.xml
 docker restart radarr > /dev/null 2>&1
 sleep 5
 
