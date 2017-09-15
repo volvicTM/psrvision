@@ -178,7 +178,10 @@ rm -rf /home/USERNAME/Downloads/rclone* > /dev/null 2>&1
 echo "- Complete"
 
 # Create isolated docker Network
-docker network create --driver bridge isolated
+docker network create \
+--driver=bridge \
+--subnet=172.18.0.0/16 \
+isolated
 
 # Add and run Dockers
 echo "Setting up Docker Containers"
@@ -188,6 +191,7 @@ docker create \
 --privileged \
 --name=letsencrypt \
 --network=isolated \
+--ip=172.18.0.2
 -v /home/USERNAME/Proxy:/config \
 -e PGID=USERGID -e PUID=USERUID  \
 -e EMAIL=USEREMAIL \
@@ -202,6 +206,7 @@ sleep 15
 docker create \
 --name sonarr \
 --network=isolated \
+--ip=172.18.0.4
 -e PUID=USERUID -e PGID=USERGID \
 -e TZ=Europe/London \
 -v /etc/localtime:/etc/localtime:ro \
@@ -218,6 +223,7 @@ sleep 15
 docker create \
 --name=radarr \
 --network=isolated \
+--ip=172.18.0.5
 -v /home/USERNAME/Radarr:/config \
 -v /home/USERNAME/Nzbget:/downloads \
 -v /home/USERNAME/Radarr:/movies \
@@ -234,6 +240,7 @@ sleep 15
 docker create \
 --name nzbget \
 --network=isolated \
+--ip=172.18.0.3
 -e PUID=USERUID -e PGID=USERGID \
 -e TZ=Europe/London \
 -v /home/USERNAME/Nzbget:/config \
@@ -246,6 +253,7 @@ sleep 15
 docker create \
 --name=hydra \
 --network=isolated \
+--ip=172.18.0.6
 -v /home/USERNAME/NzbHydra:/config \
 -v /home/USERNAME/Nzbget:/downloads \
 -v /home/USERNAME/Scripts:/Scripts \
@@ -258,6 +266,7 @@ sleep 15
 docker create \
 --name plex \
 --network=isolated \
+--ip=172.18.0.7
 -e PLEX_UID=USERUID -e PLEX_GID=USERGID \
 -e TZ=Europe/London \
 -e PLEX_CLAIM="USERPCLAIM" \
