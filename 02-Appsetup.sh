@@ -303,12 +303,12 @@ docker restart letsencrypt > /dev/null 2>&1
 sleep 5
 
 # Configure Sonarr
-sed -i~ -e 's=<UrlBase></UrlBase>=<UrlBase>/tv</UrlBase>,=g' /home/USERNAME/Sonarr/config.xml
+sed -i~ -e 's=<UrlBase></UrlBase>=<UrlBase>/tv</UrlBase>=g' /home/USERNAME/Sonarr/config.xml
 docker restart sonarr > /dev/null 2>&1
 sleep 5
 
 # Configure Radarr
-sed -i~ -e 's=<UrlBase></UrlBase>=<UrlBase>/film</UrlBase>,=g' /home/USERNAME/Radarr/config.xml
+sed -i~ -e 's=<UrlBase></UrlBase>=<UrlBase>/film</UrlBase>=g' /home/USERNAME/Radarr/config.xml
 docker restart radarr > /dev/null 2>&1
 sleep 5
 
