@@ -1,8 +1,7 @@
 **********
   About
 **********
-This is basic BASH scripts to setup Radarr, Sonarr, Nzbget, Hydra and Plex in docker containers and use a domain, reverse proxy and 
-letsencrypt to tie them all together. Rclone is used to mount cloud drives such as google drive etc. 
+This is basic BASH scripts to setup Radarr, Sonarr, Nzbget, Hydra and Plex in docker containers and use a domain, reverse proxy and letsencrypt to tie them all together. Rclone is used to mount cloud drives such as google drive etc. 
 Default setup is configured for Rclone Crypt, ENCFS will be added soon.
 
 *****************
@@ -14,6 +13,8 @@ Cloud storage, default mount scripts configured for google drive (although no cl
 *************
   Step One
 *************
+Create the API client ID's for google to monitor limits, and to enable use of -tpslimit flag in rclone.
+
 Go to https://console.cloud.google.com/ create a new project, name it something like Google Drive API.
 On the Left hand Menu, click on API's & services > Dashboard.
 Click on Enable APIS and services.
@@ -25,10 +26,14 @@ Create 2 more credentials, name them Sonarr and Radarr.
   Step Two
 *************
 Login to the root user of a FRESH install of Ubuntu 16.04 with distrubution kernel installed.
-Run:
-apt-get update
-apt-get install git
+
+Install git:
+apt-get update && apt-get install git
+
+Get psrvision scripts:
 git clone https://github.com/volvicTM/psrvision.git
+
+Run Scripts:
 cd psrvision
 sh 00-InitialConfiguration.sh
 
@@ -39,6 +44,8 @@ Once this script has finished ***SAVE*** your login details, and reboot.
   Step Three
 ***************
 Login as the user you created, root is now disabled, SSH port changed to 2245 and public key required.
+
+Run Next Script:
 cd psrvision
 sh 02-Appsetup.sh
 Enter the user password when prompted for SUDO password, finish running the script, you will be prompted. Reboot.
