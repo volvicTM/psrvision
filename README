@@ -9,6 +9,7 @@ Default setup is configured for Rclone Crypt, ENCFS will be added soon.
 *****************
 VPS, Dedicated Server or Computer with a Fresh install of Ubuntu 16.04 (Only tested on distrubution kernel).
 Cloud storage, default mount scripts configured for google drive (although no cloud storage needed if local storage used).
+Domain name
 
 *************
   Step One
