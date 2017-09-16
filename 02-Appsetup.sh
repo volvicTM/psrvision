@@ -33,7 +33,7 @@ echo "Creating Scripts"
 /bin/fusermount -uz /home/USERNAME/Plex/Media
 
 #Mount
-/usr/bin/rclone mount \
+/usr/local/sbin/rclone mount \
 --tpslimit 4 \
 --read-only \
 --allow-other \
@@ -55,7 +55,7 @@ EOM
 /bin/fusermount -uz /home/USERNAME/Sonarr/local
 
 #Mount
-/usr/bin/rclone mount \
+/usr/local/sbin/rclone mount \
 --tpslimit 2 \
 --allow-other \
 --quiet \
@@ -105,7 +105,7 @@ EOM
 /bin/fusermount -uz /home/USERNAME/Radarr/Media
 
 #Mount
-/usr/bin/rclone mount \
+/usr/local/sbin/rclone mount \
 --tpslimit 2 \
 --allow-other \
 --quiet \
