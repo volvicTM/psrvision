@@ -21,7 +21,7 @@ sed -i~ -e "s/USERBASICAUTH/${unginx}/g" 02-Appsetup.sh
 
 chmod +x /root/psrvision/01-Serverbase.sh
 chmod +x /root/psrvision/02-Appsetup.sh
-chmod +x /root/psrvision/03-StartServices.sh
+chmod +x /root/psrvision/Scripts/StartServices.sh
 sh 01-Serverbase.sh
 
 exit
