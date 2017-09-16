@@ -8,10 +8,14 @@ mkdir /home/USERNAME/Scripts/logs
 mkdir /home/USERNAME/Plex
 mkdir /home/USERNAME/Plex/Media
 mkdir /home/USERNAME/Sonarr
+mkdir /home/USERNAME/Sonarr/Scripts
+mkdir /home/USERNAME/Sonarr/Scripts/logs
 mkdir /home/USERNAME/Sonarr/local
 mkdir /home/USERNAME/Sonarr/gdrive
 mkdir /home/USERNAME/Sonarr/Media
 mkdir /home/USERNAME/Radarr
+mkdir /home/USERNAME/Radarr/Scripts
+mkdir /home/USERNAME/Radarr/Scripts/logs
 mkdir /home/USERNAME/Radarr/local
 mkdir /home/USERNAME/Radarr/gdrive
 mkdir /home/USERNAME/Radarr/Media
@@ -71,7 +75,7 @@ EOM
 
 
 # Sonarr Upload to Google Drive Script
-/bin/cat <<EOM >/home/USERNAME/Scripts/uploadtv.sh
+/bin/cat <<EOM >/home/USERNAME/Sonarr/Scripts/uploadtv.sh
 #! /bin/bash
 
 #Check if script is already running
@@ -80,7 +84,7 @@ if pidof -o %PPID -x "uploadtv.sh"; then
 fi
 
 #Variables
-LOGFILE="/Scripts/logs/uploadtv.txt"
+LOGFILE="/config/Scripts/logs/uploadtv.txt"
 FROM="/config/local/"
 TO="Sonarr_Crypt:/"
 
@@ -120,7 +124,7 @@ exit
 EOM
 
 # Radarr Upload to Google Drive Script
-/bin/cat <<EOM >/home/USERNAME/Scripts/uploadfilm.sh
+/bin/cat <<EOM >/home/USERNAME/Radarr/Scripts/uploadfilm.sh
 #! /bin/bash
 
 #Check if script is already running
@@ -129,7 +133,7 @@ if pidof -o %PPID -x "uploadfilm.sh"; then
 fi
 
 #Variables
-LOGFILE="/Scripts/logs/uploadfilm.txt"
+LOGFILE="/config/Scripts/logs/uploadfilm.txt"
 FROM="/config/local/"
 TO="Radarr_Crypt:/"
 
@@ -146,6 +150,8 @@ EOM
 
 # Make Scripts executable
 chmod +x /home/USERNAME/Scripts/*.sh
+chmod +x /home/USERNAME/Radarr/Scripts/*.sh
+chmod +x /home/USERNAME/Sonarr/Scripts/*.sh
 echo "- Complete"
 
 # Install necessary Applications
@@ -179,8 +185,8 @@ echo "- Complete"
 
 # Create isolated docker Network
 docker network create \
---driver=bridge \
---subnet=172.18.0.0/16 \
+--driver bridge \
+--subnet 172.18.0.0/16 \
 isolated
 
 # Add and run Dockers
@@ -211,11 +217,10 @@ docker create \
 -e TZ=Europe/London \
 -v /etc/localtime:/etc/localtime:ro \
 -v /home/USERNAME/Sonarr:/config \
--v /home/USERNAME/Sonarr:/tv \
+-v /home/USERNAME/Sonarr/Media:/tv \
 -v /home/USERNAME/Nzbget:/downloads \
 -v /usr/bin/rclone:/rclone \
 -v /home/USERNAME/.config/rclone:/rcloneconf \
--v /home/USERNAME/Scripts:/Scripts \
 linuxserver/sonarr > /dev/null 2>&1
 sleep 15
 
@@ -226,11 +231,10 @@ docker create \
 --ip=172.18.0.5 \
 -v /home/USERNAME/Radarr:/config \
 -v /home/USERNAME/Nzbget:/downloads \
--v /home/USERNAME/Radarr:/movies \
+-v /home/USERNAME/Radarr/Media:/movies \
 -v /usr/bin/rclone:/rclone \
 -v /home/USERNAME/.config/rclone:/rcloneconf \
 -v /etc/localtime:/etc/localtime:ro \
--v /home/USERNAME/Scripts:/Scripts \
 -e TZ=Europe/London \
 -e PGID=USERGID -e PUID=USERUID \
 linuxserver/radarr > /dev/null 2>&1
