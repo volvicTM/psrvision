@@ -218,7 +218,7 @@ docker create \
 -v /etc/localtime:/etc/localtime:ro \
 -v /home/USERNAME/Sonarr:/config \
 -v /home/USERNAME/Sonarr/Media:/tv \
--v /home/USERNAME/Nzbget:/downloads \
+-v /home/USERNAME/Nzbget/completed:/downloads \
 -v /usr/bin/rclone:/rclone \
 -v /home/USERNAME/.config/rclone:/rcloneconf \
 linuxserver/sonarr > /dev/null 2>&1
@@ -230,7 +230,7 @@ docker create \
 --network=isolated \
 --ip=172.18.0.5 \
 -v /home/USERNAME/Radarr:/config \
--v /home/USERNAME/Nzbget:/downloads \
+-v /home/USERNAME/Nzbget/completed:/downloads \
 -v /home/USERNAME/Radarr/Media:/movies \
 -v /usr/bin/rclone:/rclone \
 -v /home/USERNAME/.config/rclone:/rcloneconf \
@@ -259,7 +259,7 @@ docker create \
 --network=isolated \
 --ip=172.18.0.6 \
 -v /home/USERNAME/NzbHydra:/config \
--v /home/USERNAME/Nzbget:/downloads \
+-v /home/USERNAME/Nzbget/completed:/downloads \
 -v /home/USERNAME/Scripts:/Scripts \
 -e PGID=USERGID -e PUID=USERUID \
 -e TZ=Europe/London \
