@@ -177,9 +177,9 @@ sudo systemctl enable docker > /dev/null 2>&1
 # Rclone
 wget https://downloads.rclone.org/rclone-current-linux-amd64.zip -P /home/USERNAME/Downloads > /dev/null 2>&1
 unzip /home/USERNAME/Downloads/rclone*.zip -d /home/USERNAME/Downloads/ > /dev/null 2>&1
-sudo cp /home/USERNAME/Downloads/rclone*/rclone /usr/bin > /dev/null 2>&1
-sudo chown root:root /usr/bin/rclone > /dev/null 2>&1
-sudo chmod 755 /usr/bin/rclone > /dev/null 2>&1
+sudo cp /home/USERNAME/Downloads/rclone*/rclone /usr/local/sbin/rclone > /dev/null 2>&1
+sudo chown root:root /usr/local/sbin/rclone > /dev/null 2>&1
+sudo chmod 755 /usr/local/sbin/rclone > /dev/null 2>&1
 rm -rf /home/USERNAME/Downloads/rclone* > /dev/null 2>&1
 echo "- Complete"
 
@@ -219,7 +219,7 @@ docker create \
 -v /home/USERNAME/Sonarr:/config \
 -v /home/USERNAME/Sonarr/Media:/tv \
 -v /home/USERNAME/Nzbget/completed:/downloads \
--v /usr/bin/rclone:/rclone \
+-v /usr/local/sbin:/rclone \
 -v /home/USERNAME/.config/rclone:/rcloneconf \
 linuxserver/sonarr > /dev/null 2>&1
 sleep 15
@@ -232,7 +232,7 @@ docker create \
 -v /home/USERNAME/Radarr:/config \
 -v /home/USERNAME/Nzbget/completed:/downloads \
 -v /home/USERNAME/Radarr/Media:/movies \
--v /usr/bin/rclone:/rclone \
+-v /usr/local/sbin:/rclone \
 -v /home/USERNAME/.config/rclone:/rcloneconf \
 -v /etc/localtime:/etc/localtime:ro \
 -e TZ=Europe/London \
