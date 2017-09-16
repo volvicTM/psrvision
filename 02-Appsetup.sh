@@ -159,11 +159,11 @@ apt-transport-https \
 ca-certificates \
 curl \
 software-properties-common > /dev/null 2>&1
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - > /dev/null 2>&1
 sudo add-apt-repository \
 "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
 $(lsb_release -cs) \
-stable"
+stable" > /dev/null 2>&1
 sudo apt-get -y update > /dev/null 2>&1
 sudo apt-get -y install docker-ce > /dev/null 2>&1
 sudo systemctl enable docker > /dev/null 2>&1
