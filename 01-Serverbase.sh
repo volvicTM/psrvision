@@ -9,7 +9,7 @@ echo "- Complete"
 echo "Cleaning Ubuntu..."
 apt-get -y autoremove > /dev/null 2>&1
 apt-get clean > /dev/null 2>&1
-apt-get purge -y $(dpkg -l | awk '/^rc/ { print $2 }')
+apt-get purge -y $(dpkg -l | awk '/^rc/ { print $2 }') > /dev/null 2>&1
 echo "- Complete"
 
 # Adduser
