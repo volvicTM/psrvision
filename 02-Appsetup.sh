@@ -24,125 +24,7 @@ mkdir /home/USERNAME/Proxy
 echo "- Complete"
 
 echo "Creating Scripts"
-# Add rclone scripts
-# Plex
-/bin/cat <<EOM >/home/USERNAME/Scripts/plexmount.sh
-#! /bin/bash
-
-#Unmount
-/bin/fusermount -uz /home/USERNAME/Plex/Media
-
-#Mount
-/usr/local/sbin/rclone mount \
---tpslimit 4 \
---read-only \
---allow-other \
---quiet \
---buffer-size 512M \
---log-file=/home/USERNAME/Scripts/logs/plexmount.log \
-Plex_Crypt: /home/USERNAME/Plex/Media &
-
-exit
-EOM
-
-# Sonarr Mount
-/bin/cat <<EOM >/home/USERNAME/Scripts/sonarrmount.sh
-#! /bin/bash
-
-#Unmount
-/bin/fusermount -uz /home/USERNAME/Sonarr/Media
-/bin/fusermount -uz /home/USERNAME/Sonarr/gdrive
-/bin/fusermount -uz /home/USERNAME/Sonarr/local
-
-#Mount
-/usr/local/sbin/rclone mount \
---tpslimit 2 \
---allow-other \
---quiet \
---buffer-size 512M \
---log-file=/home/USERNAME/Scripts/logs/sonarrmount.log \
-Sonarr_Crypt: /home/USERNAME/Sonarr/gdrive &
-
-#UnionFuse Local and gdrive into Media
-unionfs-fuse -o cow,allow_other,direct_io,auto_cache,sync_read /home/USERNAME/Sonarr/local=RW:/home/USERNAME/Sonarr/gdrive=RO /home/USERNAME/Sonarr/Media/
-
-exit
-EOM
-
-
-# Sonarr Upload to Google Drive Script
-/bin/cat <<EOM >/home/USERNAME/Scripts/uploadtv.sh
-#! /bin/bash
-
-#Check if script is already running
-if pidof -o %PPID -x "uploadtv.sh"; then
-   exit 1
-fi
-
-#Variables
-LOGFILE="/Scripts/logs/uploadtv.txt"
-FROM="/config/local/"
-TO="Sonarr_Crypt:/"
-
-#Upload to Google Drive
-echo "$(date "+%d.%m.%Y %T") RCLONE UPLOAD STARTED" | tee -a $LOGFILE
-/rclone move --config=/rcloneconf/rclone.conf $FROM $TO -c --no-traverse --transfers=2 --checkers=2 --delete-after --log-file=$LOGFILE
-echo "$(date "+%d.%m.%Y %T") RCLONE UPLOAD ENDED" | tee -a $LOGFILE
-sleep 30s
-
-# Remove Empty Folders
-find "/config/local/" -mindepth 1 -type d -empty -delete
-exit
-EOM
-
-# Radarr Mount
-/bin/cat <<EOM >/home/USERNAME/Scripts/radarrmount.sh
-#! /bin/bash
-
-#Unmount
-/bin/fusermount -uz /home/USERNAME/Radarr/gdrive
-/bin/fusermount -uz /home/USERNAME/Radarr/local
-/bin/fusermount -uz /home/USERNAME/Radarr/Media
-
-#Mount
-/usr/local/sbin/rclone mount \
---tpslimit 2 \
---allow-other \
---quiet \
---buffer-size 512M \
---log-file=/home/USERNAME/Scripts/logs/radarrmount.log \
-Radarr_Crypt: /home/USERNAME/Radarr/gdrive &
-
-#UnionFuse Local and gdrive into Media
-unionfs-fuse -o cow,allow_other,direct_io,auto_cache,sync_read /home/USERNAME/Radarr/local=RW:/home/USERNAME/Radarr/gdrive=RO /home/USERNAME/Radarr/Media/
-
-exit
-EOM
-
-# Radarr Upload to Google Drive Script
-/bin/cat <<EOM >/home/USERNAME/Scripts/uploadfilm.sh
-#! /bin/bash
-
-#Check if script is already running
-if pidof -o %PPID -x "uploadfilm.sh"; then
-   exit 1
-fi
-
-#Variables
-LOGFILE="/Scripts/logs/uploadfilm.txt"
-FROM="/config/local/"
-TO="Radarr_Crypt:/"
-
-#Upload to Google Drive
-echo "$(date "+%d.%m.%Y %T") RCLONE UPLOAD STARTED" | tee -a $LOGFILE
-/rclone move --config=/rcloneconf/rclone.conf $FROM $TO -c --no-traverse --transfers=2 --checkers=2 --delete-after --log-file=$LOGFILE
-echo "$(date "+%d.%m.%Y %T") RCLONE UPLOAD ENDED" | tee -a $LOGFILE
-sleep 30s
-
-# Remove Empty Folders
-find "/config/local/" -mindepth 1 -type d -empty -delete
-exit
-EOM
+cp /home/USERNAME/psrvision/Scripts/ /home/USERNAME/Scripts/
 
 # Make Scripts executable
 chmod +x /home/USERNAME/Scripts/*.sh
@@ -338,7 +220,6 @@ echo "*** Plex:   https://plex.USERURL"
 echo "****************************"
 echo
 echo "Installation Complete. Please reboot and run the StartServices.sh script"
-cp /home/USERNAME/psrvision/Scripts/StartServices.sh /home/USERNAME/Scripts/StartServices.sh
 sudo rm -rf /home/USERNAME/psrvision
 
 exit
