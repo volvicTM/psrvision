@@ -14,9 +14,7 @@ echo "- Complete"
 
 # Adduser
 echo "Adding user and SSH Key"
-randompw=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
-useradd -d /home/USERNAME -m -g sudo -s /bin/bash USERNAME
-echo USERNAME:$randompw | chpasswd
+adduser USERNAME
 
 # Enter SSH Key
 mkdir /home/USERNAME/.ssh
