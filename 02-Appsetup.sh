@@ -49,6 +49,7 @@ stable" > /dev/null 2>&1
 sudo apt-get -y update > /dev/null 2>&1
 sudo apt-get -y install docker-ce > /dev/null 2>&1
 sudo systemctl enable docker > /dev/null 2>&1
+sudo usermod -aG docker USERNAME
 
 # Rclone
 wget https://downloads.rclone.org/rclone-current-linux-amd64.zip -P /home/USERNAME/Downloads > /dev/null 2>&1
