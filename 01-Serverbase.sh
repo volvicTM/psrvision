@@ -23,8 +23,8 @@ echo "Please Generate a SSH Key with puttygen"
 echo -n "Paste the PUBLIC SSH key here: "
 read pubkey
 echo $pubkey >> /home/USERNAME/.ssh/authorized_keys
-chown USERNAME:sudo -R /home/USERNAME/.ssh
-chown USERNAME:sudo -R /home/USERNAME/.ssh/authorized_keys
+chown USERNAME:USERNAME -R /home/USERNAME/.ssh
+chown USERNAME:USERNAME -R /home/USERNAME/.ssh/authorized_keys
 chmod 700 /home/USERNAME/.ssh
 chmod 600 /home/USERNAME/.ssh/authorized_keys
 echo "- Complete"
@@ -112,8 +112,8 @@ echo "Root account has been disabled"
 
 # Move psrvision files to new user account
 cp -r /root/psrvision /home/USERNAME/psrvision
-chown -R USERNAME:sudo /home/USERNAME/psrvision
-chown -R USERNAME:sudo /home/USERNAME/psrvision/*
+chown -R USERNAME:USERNAME /home/USERNAME/psrvision
+chown -R USERNAME:USERNAME /home/USERNAME/psrvision/*
 rm -rf /root/psrvision
 
 exit
