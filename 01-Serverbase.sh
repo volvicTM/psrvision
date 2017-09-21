@@ -15,6 +15,7 @@ echo "- Complete"
 # Adduser
 echo "Adding user and SSH Key"
 adduser USERNAME
+usermod -aG sudo USERNAME
 
 # Enter SSH Key
 mkdir /home/USERNAME/.ssh
@@ -34,10 +35,6 @@ sed -i 's/Port 22/Port 2245/' /etc/ssh/sshd_config
 sed -i 's/PermitRootLogin .*/PermitRootLogin no/g' /etc/ssh/sshd_config
 sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
 sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
-
-# adduser to docker group
-groupadd docker > /dev/null
-usermod -aG docker USERNAME > /dev/null
 
 # Get UID and GID
 id -u USERNAME
