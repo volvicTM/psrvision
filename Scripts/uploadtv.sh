@@ -7,7 +7,7 @@ fi
 
 #Variables
 LOGFILE="/Scripts/logs/uploadtv.txt"
-FROM="/config/local/"
+FROM="/tv/local/"
 TO="Sonarr_Crypt:/"
 
 #Upload to Google Drive
@@ -17,6 +17,6 @@ echo "$(date "+%d.%m.%Y %T") RCLONE UPLOAD ENDED" | tee -a $LOGFILE
 sleep 30s
 
 # Remove Empty Folders
-find "/config/local/" -mindepth 1 -type d -empty -delete
+find "/tv/local/" -mindepth 1 -type d -empty -delete
 
 exit
