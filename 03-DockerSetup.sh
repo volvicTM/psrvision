@@ -23,7 +23,6 @@ docker create \
 -p 443:443 \
 -e TZ=Europe/London \
 linuxserver/letsencrypt
-sleep 20
 
 # Sonarr Container
 docker create \
@@ -40,7 +39,6 @@ docker create \
 -v /home/USERNAME/.config/rclone:/rcloneconf \
 -v /home/USERNAME/Scripts:/Scripts \
 linuxserver/sonarr
-sleep 20
 
 # Radarr Container
 docker create \
@@ -57,7 +55,6 @@ docker create \
 -e TZ=Europe/London \
 -e PGID=USERGID -e PUID=USERUID \
 linuxserver/radarr
-sleep 20
 
 # NZBGet Container
 docker create \
@@ -70,7 +67,6 @@ docker create \
 -v /home/USERNAME/Nzbget:/downloads \
 -v /home/USERNAME/Scripts:/Scripts \
 linuxserver/nzbget
-sleep 20
 
 # NZBHydra Container
 docker create \
@@ -83,7 +79,6 @@ docker create \
 -e PGID=USERGID -e PUID=USERUID \
 -e TZ=Europe/London \
 linuxserver/hydra
-sleep 20
 
 # Plex Container
 docker create \
@@ -98,7 +93,6 @@ docker create \
 -v /home/USERNAME/Mount/Plex/Media:/data \
 -v /home/USERNAME/Scripts:/Scripts \
 plexinc/pms-docker
-sleep 20
 echo "- Complete"
 
 # Configure Dockers and Proxy
