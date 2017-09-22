@@ -33,9 +33,9 @@ docker create \
 -e TZ=Europe/London \
 -v /etc/localtime:/etc/localtime:ro \
 -v /home/USERNAME/Sonarr:/config \
--v /home/USERNAME/Mount/Sonarr/Media:/tv \
+-v /home/USERNAME/Mount/Sonarr:/tv \
 -v /home/USERNAME/Nzbget:/downloads \
--v /usr/local/sbin:/rclone \
+-v /usr/local/sbin/rclone:/rclone \
 -v /home/USERNAME/.config/rclone:/rcloneconf \
 -v /home/USERNAME/Scripts:/Scripts \
 linuxserver/sonarr
@@ -47,8 +47,8 @@ docker create \
 --ip=172.18.0.5 \
 -v /home/USERNAME/Radarr:/config \
 -v /home/USERNAME/Nzbget:/downloads \
--v /home/USERNAME/Mount/Radarr/Media:/movies \
--v /usr/local/sbin:/rclone \
+-v /home/USERNAME/Mount/Radarr:/movies \
+-v /usr/local/sbin/rclone:/rclone \
 -v /home/USERNAME/.config/rclone:/rcloneconf \
 -v /home/USERNAME/Scripts:/Scripts \
 -v /etc/localtime:/etc/localtime:ro \
