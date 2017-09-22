@@ -14,8 +14,6 @@ mkdir /home/USERNAME/Mount/Sonarr/Media
 mkdir /home/USERNAME/Mount/Plex
 mkdir /home/USERNAME/Mount/Plex/Media
 mkdir /home/USERNAME/Downloads
-mkdir /home/USERNAME/Scripts
-mkdir /home/USERNAME/Scripts/logs
 mkdir /home/USERNAME/Plex
 mkdir /home/USERNAME/Sonarr
 mkdir /home/USERNAME/Radarr
@@ -26,11 +24,8 @@ mkdir /home/USERNAME/Proxy
 echo "- Complete"
 
 echo "Creating Scripts"
-cp /home/USERNAME/psrvision/Scripts/* /home/USERNAME/Scripts/*
-
-# Make Scripts executable
-chmod +x /home/USERNAME/Scripts/*.sh
-echo "- Complete"
+cp /home/USERNAME/psrvision/Scripts /home/USERNAME/Scripts
+mkdir /home/USERNAME/Scripts/logs
 
 # Install necessary Applications
 echo "Installing Apps"
@@ -52,7 +47,6 @@ sudo apt-get -y update
 sudo apt-get -y install docker-ce
 sudo systemctl enable docker
 sudo usermod -aG docker USERNAME
-echo "Please enter your login password"
 
 # Rclone
 wget https://downloads.rclone.org/rclone-current-linux-amd64.zip -P /home/USERNAME/Downloads
