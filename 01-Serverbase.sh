@@ -2,14 +2,14 @@
 
 # Update Ubuntu
 echo "Updating Ubuntu..."
-apt-get update > /dev/null 2>&1
-apt-get -y upgrade > /dev/null 2>&1
-apt-get -y dist-upgrade > /dev/null 2>&1
+apt-get update
+apt-get -y upgrade
+apt-get -y dist-upgrade
 echo "- Complete"
 echo "Cleaning Ubuntu..."
-apt-get -y autoremove > /dev/null 2>&1
-apt-get clean > /dev/null 2>&1
-apt-get purge -y $(dpkg -l | awk '/^rc/ { print $2 }') > /dev/null 2>&1
+apt-get -y autoremove
+apt-get clean
+apt-get purge -y $(dpkg -l | awk '/^rc/ { print $2 }')
 echo "- Complete"
 
 # Adduser
@@ -27,14 +27,6 @@ chown USERNAME:USERNAME -R /home/USERNAME/.ssh
 chown USERNAME:USERNAME -R /home/USERNAME/.ssh/authorized_keys
 chmod 700 /home/USERNAME/.ssh
 chmod 600 /home/USERNAME/.ssh/authorized_keys
-echo "- Complete"
-
-# Secure SSH Login
-echo "Securing Ubuntu"
-sed -i 's/Port 22/Port 2245/' /etc/ssh/sshd_config
-sed -i 's/PermitRootLogin .*/PermitRootLogin no/g' /etc/ssh/sshd_config
-sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
-sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
 
 # Get UID and GID
 id -u USERNAME
@@ -43,6 +35,14 @@ id -g USERNAME
 read -p "Please enter the above number (GID), exactly as you see it: " ugid
 sed -i~ -e "s/USERUID/${uuid}/g" 03-DockerSetup.sh
 sed -i~ -e "s/USERGID/${ugid}/g" 03-DockerSetup.sh
+echo "- Complete"
+
+# Secure SSH Login
+echo "Securing Ubuntu"
+sed -i 's/Port 22/Port 2245/' /etc/ssh/sshd_config
+sed -i 's/PermitRootLogin .*/PermitRootLogin no/g' /etc/ssh/sshd_config
+sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
+sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
 
 # Secure fstab
 echo 'tmpfs /run/shm tmpfs defaults,noexec,nosuid 0 0' >> /etc/fstab
@@ -92,28 +92,25 @@ sed -i 's/multi on/nospoof on/' /etc/host.conf
 echo "- Complete"
 
 # Disable UFW
-ufw disable > /dev/null  2>&1
+ufw disable
 
-# Get Plex Claim Code
-read -p "Please go to plex.tv/claim and copy and paste the code below: " upclaim
-sed -i~ -e "s/USERPCLAIM/${upclaim}/g" 02-Appsetup.sh
+
+# Move psrvision files to new user account
+cp -r /root/psrvision /home/USERNAME/psrvision
+chown -R USERNAME:USERNAME /home/USERNAME/psrvision
+chown -R USERNAME:USERNAME /home/USERNAME/psrvision/*
+chown -R USERNAME:USERNAME /home/USERNAME/psrvision/Scripts/*
+rm -rf /root/psrvision
 
 echo
 echo "Please record your username and password. (You may change the password at any time!)"
 echo
 echo "****************************"
 echo "*** Username: " USERNAME
-echo "*** Password: " $randompw
 echo "*** SSH Port: 2245"
 echo "****************************"
 echo
 echo "Reboot the server and login with the USERNAME account before continuing." 
 echo "Root account has been disabled"
-
-# Move psrvision files to new user account
-cp -r /root/psrvision /home/USERNAME/psrvision
-chown -R USERNAME:USERNAME /home/USERNAME/psrvision
-chown -R USERNAME:USERNAME /home/USERNAME/psrvision/*
-rm -rf /root/psrvision
 
 exit
