@@ -2,29 +2,31 @@
 
 # Make required directories
 echo "Creating Directories"
+mkdir /home/USERNAME/Mount
+mkdir /home/USERNAME/Mount/Radarr
+mkdir /home/USERNAME/Mount/Radarr/local
+mkdir /home/USERNAME/Mount/Radarr/gdrive
+mkdir /home/USERNAME/Mount/Radarr/Media
+mkdir /home/USERNAME/Mount/Sonarr
+mkdir /home/USERNAME/Mount/Sonarr/local
+mkdir /home/USERNAME/Mount/Sonarr/gdrive
+mkdir /home/USERNAME/Mount/Sonarr/Media
+mkdir /home/USERNAME/Mount/Plex
+mkdir /home/USERNAME/Mount/Plex/Media
 mkdir /home/USERNAME/Downloads
 mkdir /home/USERNAME/Scripts
 mkdir /home/USERNAME/Scripts/logs
 mkdir /home/USERNAME/Plex
-mkdir /home/USERNAME/Plex/Media
 mkdir /home/USERNAME/Sonarr
-mkdir /home/USERNAME/Sonarr/local
-mkdir /home/USERNAME/Sonarr/gdrive
-mkdir /home/USERNAME/Sonarr/Media
 mkdir /home/USERNAME/Radarr
-mkdir /home/USERNAME/Radarr/local
-mkdir /home/USERNAME/Radarr/gdrive
-mkdir /home/USERNAME/Radarr/Media
 mkdir /home/USERNAME/Nzbget
 mkdir /home/USERNAME/Nzbget/completed
 mkdir /home/USERNAME/NzbHydra
-mkdir /home/USERNAME/.config
-mkdir /home/USERNAME/.config/rclone
 mkdir /home/USERNAME/Proxy
 echo "- Complete"
 
 echo "Creating Scripts"
-cp /home/USERNAME/psrvision/Scripts/ /home/USERNAME/Scripts/
+cp /home/USERNAME/psrvision/Scripts/* /home/USERNAME/Scripts/*
 
 # Make Scripts executable
 chmod +x /home/USERNAME/Scripts/*.sh
@@ -50,6 +52,7 @@ sudo apt-get -y update
 sudo apt-get -y install docker-ce
 sudo systemctl enable docker
 sudo usermod -aG docker USERNAME
+echo "Please enter your login password"
 
 # Rclone
 wget https://downloads.rclone.org/rclone-current-linux-amd64.zip -P /home/USERNAME/Downloads
