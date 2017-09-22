@@ -12,6 +12,16 @@ docker stop $(docker ps -a -q) > /dev/null 2>&1
 /bin/fusermount -uz /home/USERNAME/Mount/Plex/Media > /dev/null 2>&1
 echo "- Completed"
 
+# Run Mounts
+echo "Mounting Google Drive Mounts"
+sh /home/USERNAME/Scripts/sonarrmount.sh > /dev/null 2>&1
+sleep 2
+sh /home/USERNAME/Scripts/radarrmount.sh > /dev/null 2>&1
+sleep 2
+sh /home/USERNAME/Scripts/plexmount.sh > /dev/null 2>&1
+sleep 2
+echo "- Completed"
+
 # Start Containers
 echo "Starting Containers"
 docker start letsencrypt > /dev/null 2>&1
@@ -26,16 +36,6 @@ docker start hydra > /dev/null 2>&1
 sleep 3
 docker start nzbget > /dev/null 2>&1
 sleep 3
-echo "- Completed"
-
-# Run Mounts
-echo "Mounting Google Drive Mounts"
-sh /home/USERNAME/Scripts/sonarrmount.sh > /dev/null 2>&1
-sleep 2
-sh /home/USERNAME/Scripts/radarrmount.sh > /dev/null 2>&1
-sleep 2
-sh /home/USERNAME/Scripts/plexmount.sh > /dev/null 2>&1
-sleep 2
 echo "- Completed"
 
 exit
