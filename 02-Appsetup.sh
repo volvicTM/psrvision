@@ -21,6 +21,8 @@ mkdir /home/USERNAME/Nzbget
 mkdir /home/USERNAME/Nzbget/completed
 mkdir /home/USERNAME/NzbHydra
 mkdir /home/USERNAME/Proxy
+mkdir /home/USERNAME/.config
+mkdir /home/USERNAME/.config/rclone
 echo "- Complete"
 
 echo "Creating Scripts"
