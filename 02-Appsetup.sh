@@ -57,6 +57,11 @@ sudo chmod 755 /usr/local/sbin/rclone
 rm -rf /home/USERNAME/Downloads/rclone*
 echo "- Complete"
 
+# Get Plex Claim Code
+read -p "Please go to plex.tv/claim and copy and paste the code below: " upclaim
+sed -i~ -e "s/USERPCLAIM/${upclaim}/g" 03-DockerSetup.sh
+
+
 echo "Please Enter your user password to relogin, to enable docker group, then run 03-DockerSetup.sh"
 su - $USER
 
