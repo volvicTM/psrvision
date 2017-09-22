@@ -41,8 +41,8 @@ id -u USERNAME
 read -p "Please enter the above number (UID), exactly as you see it: " uuid
 id -g USERNAME
 read -p "Please enter the above number (GID), exactly as you see it: " ugid
-sed -i~ -e "s/USERUID/${uuid}/g" 02-Appsetup.sh
-sed -i~ -e "s/USERGID/${ugid}/g" 02-Appsetup.sh
+sed -i~ -e "s/USERUID/${uuid}/g" 03-DockerSetup.sh
+sed -i~ -e "s/USERGID/${ugid}/g" 03-DockerSetup.sh
 
 # Secure fstab
 echo 'tmpfs /run/shm tmpfs defaults,noexec,nosuid 0 0' >> /etc/fstab
