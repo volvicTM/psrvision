@@ -7,7 +7,7 @@ fi
 
 #Variables
 LOGFILE="/Scripts/logs/uploadfilm.txt"
-FROM="/config/local/"
+FROM="/movies/local/"
 TO="Radarr_Crypt:/"
 
 #Upload to Google Drive
@@ -17,6 +17,6 @@ echo "$(date "+%d.%m.%Y %T") RCLONE UPLOAD ENDED" | tee -a $LOGFILE
 sleep 30s
 
 # Remove Empty Folders
-find "/config/local/" -mindepth 1 -type d -empty -delete
+find "/movies/local/" -mindepth 1 -type d -empty -delete
 
 exit
