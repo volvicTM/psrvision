@@ -20,7 +20,7 @@ docker create \
 -e EMAIL=USEREMAIL \
 -e URL=USERURL \
 -e SUBDOMAINS=plex \
--p 443:443 \
+-p 443:443 -p 80:80 \
 -e TZ=Europe/London \
 linuxserver/letsencrypt
 
