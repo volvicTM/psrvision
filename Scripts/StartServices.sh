@@ -51,6 +51,8 @@ docker start hydra > /dev/null 2>&1
 sleep 3
 docker start nzbget > /dev/null 2>&1
 sleep 3
+docker start watchtower > /dev/null 2>&1
+sleep 5
 echo "- Completed"
 
 exit
