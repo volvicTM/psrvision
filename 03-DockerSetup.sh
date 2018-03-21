@@ -117,6 +117,7 @@ docker create \
 --name plex \
 --network=isolated \
 --ip=172.18.0.9 \
+--device=/dev/dri:/dev/dri \
 -e PLEX_UID=USERUID -e PLEX_GID=USERGID \
 -e TZ=Europe/London \
 -e PLEX_CLAIM="USERPCLAIM" \
