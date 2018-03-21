@@ -69,6 +69,12 @@ sudo chmod 755 /usr/local/sbin/rclone
 rm -rf /home/USERNAME/Downloads/rclone*
 echo "- Complete"
 
+# Plexdrive
+wget https://github.com/dweidenfeld/plexdrive/releases/download/5.0.0/plexdrive-linux-amd64 -P /home/USERNAME/Downloads
+sudo chown -R USERNAME:USERNAME /home/USERNAME/Downloads/plexdrive-linux-amd64
+chmod +x /home/USERNAME/Downloads/plexdrive-linux-amd64
+sudo mv /home/USERNAME/Downloads/plexdrive-linux-amd64 /usr/local/sbin/plexdrive
+
 # Get Plex Claim Code
 read -p "Please go to plex.tv/claim and copy and paste the code below: " upclaim
 sed -i~ -e "s/USERPCLAIM/${upclaim}/g" 03-DockerSetup.sh
