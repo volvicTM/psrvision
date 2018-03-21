@@ -36,7 +36,7 @@ mkdir /home/USERNAME/.config/rclone
 echo "- Complete"
 
 echo "Creating Scripts"
-cp /home/USERNAME/psrvision/Scripts /home/USERNAME/Scripts
+cp -r /home/USERNAME/psrvision/Scripts /home/USERNAME/Scripts
 mkdir /home/USERNAME/Scripts/logs
 
 # Install necessary Applications
