@@ -171,7 +171,7 @@ sleep 5
 
 # Configure 4kSonarr
 sed -i~ -e 's=<UrlBase></UrlBase>=<UrlBase>/4ktv</UrlBase>=g' /home/USERNAME/4kSonarr/config.xml
-docker restart sonarr
+docker restart 4ksonarr
 sleep 5
 
 # Configure Radarr
@@ -181,7 +181,7 @@ sleep 5
 
 # Configure 4kRadarr
 sed -i~ -e 's=<UrlBase></UrlBase>=<UrlBase>/4kfilm</UrlBase>=g' /home/USERNAME/4kRadarr/config.xml
-docker restart radarr
+docker restart 4kradarr
 sleep 5
 
 # Configure Hydra
