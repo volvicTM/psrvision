@@ -40,14 +40,46 @@ docker create \
 -v /home/USERNAME/Scripts:/Scripts \
 linuxserver/sonarr
 
+# 4K Sonarr Container
+docker create \
+--name 4ksonarr \
+--network=isolated \
+--ip=172.18.0.5 \
+-e PUID=USERUID -e PGID=USERGID \
+-e TZ=Europe/London \
+-v /etc/localtime:/etc/localtime:ro \
+-v /home/USERNAME/4kSonarr:/config \
+-v /home/USERNAME/Mount/4kSonarr:/tv \
+-v /home/USERNAME/Nzbget:/downloads \
+-v /usr/local/sbin/rclone:/rclone \
+-v /home/USERNAME/.config/rclone:/rcloneconf \
+-v /home/USERNAME/Scripts:/Scripts \
+linuxserver/sonarr
+
 # Radarr Container
 docker create \
 --name=radarr \
 --network=isolated \
---ip=172.18.0.5 \
+--ip=172.18.0.6 \
 -v /home/USERNAME/Radarr:/config \
 -v /home/USERNAME/Nzbget:/downloads \
 -v /home/USERNAME/Mount/Radarr:/movies \
+-v /usr/local/sbin/rclone:/rclone \
+-v /home/USERNAME/.config/rclone:/rcloneconf \
+-v /home/USERNAME/Scripts:/Scripts \
+-v /etc/localtime:/etc/localtime:ro \
+-e TZ=Europe/London \
+-e PGID=USERGID -e PUID=USERUID \
+linuxserver/radarr
+
+# Radarr Container
+docker create \
+--name=4kradarr \
+--network=isolated \
+--ip=172.18.0.7 \
+-v /home/USERNAME/4kRadarr:/config \
+-v /home/USERNAME/Nzbget:/downloads \
+-v /home/USERNAME/Mount/4kRadarr:/movies \
 -v /usr/local/sbin/rclone:/rclone \
 -v /home/USERNAME/.config/rclone:/rcloneconf \
 -v /home/USERNAME/Scripts:/Scripts \
@@ -72,7 +104,7 @@ linuxserver/nzbget
 docker create \
 --name=hydra \
 --network=isolated \
---ip=172.18.0.6 \
+--ip=172.18.0.8 \
 -v /home/USERNAME/NzbHydra:/config \
 -v /home/USERNAME/Nzbget:/downloads \
 -v /home/USERNAME/Scripts:/Scripts \
@@ -84,7 +116,7 @@ linuxserver/hydra
 docker create \
 --name plex \
 --network=isolated \
---ip=172.18.0.7 \
+--ip=172.18.0.9 \
 -e PLEX_UID=USERUID -e PLEX_GID=USERGID \
 -e TZ=Europe/London \
 -e PLEX_CLAIM="USERPCLAIM" \
@@ -106,6 +138,10 @@ docker start sonarr
 sleep 5
 docker start radarr
 sleep 5
+docker start 4ksonarr
+sleep 5
+docker start 4kradarr
+sleep 5
 docker start hydra
 sleep 5
 docker start plex
@@ -124,8 +160,18 @@ sed -i~ -e 's=<UrlBase></UrlBase>=<UrlBase>/tv</UrlBase>=g' /home/USERNAME/Sonar
 docker restart sonarr
 sleep 5
 
+# Configure 4kSonarr
+sed -i~ -e 's=<UrlBase></UrlBase>=<UrlBase>/4ktv</UrlBase>=g' /home/USERNAME/4kSonarr/config.xml
+docker restart sonarr
+sleep 5
+
 # Configure Radarr
 sed -i~ -e 's=<UrlBase></UrlBase>=<UrlBase>/film</UrlBase>=g' /home/USERNAME/Radarr/config.xml
+docker restart radarr
+sleep 5
+
+# Configure 4kRadarr
+sed -i~ -e 's=<UrlBase></UrlBase>=<UrlBase>/4kfilm</UrlBase>=g' /home/USERNAME/4kRadarr/config.xml
 docker restart radarr
 sleep 5
 
@@ -148,7 +194,9 @@ echo "*** Username for website login:  USERBASICAUTH"
 echo "*** Use the password you created earlier"
 echo "*** URL's to access services: "
 echo "*** Sonarr: https://USERURL/tv"
+echo "*** 4K Sonarr: https://USERURL/4ktv"
 echo "*** Radarr: https://USERURL/film"
+echo "*** 4K Radarr: https://USERURL/4kfilm"
 echo "*** Nzbget: https://USERURL/nzbget"
 echo "*** Hydra:  https://USERURL/hydra"
 echo "*** Plex:   https://plex.USERURL"
