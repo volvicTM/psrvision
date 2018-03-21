@@ -33,10 +33,22 @@ server {
 		proxy_pass http://172.18.0.4:8989;
 		include /config/nginx/proxy.conf;
 	}
+		location /4ktv {
+		auth_basic "Restricted";
+                auth_basic_user_file /config/nginx/.htpasswd;
+		proxy_pass http://172.18.0.5:8989;
+		include /config/nginx/proxy.conf;
+	}
                 location /film {
 		auth_basic "Restricted";
                 auth_basic_user_file /config/nginx/.htpasswd;
-                proxy_pass http://172.18.0.5:7878;
+                proxy_pass http://172.18.0.6:7878;
+                include /config/nginx/proxy.conf;
+        }
+	        location /4kfilm {
+		auth_basic "Restricted";
+                auth_basic_user_file /config/nginx/.htpasswd;
+                proxy_pass http://172.18.0.7:7878;
                 include /config/nginx/proxy.conf;
         }
 		location ~ ^/nzbget($|./*) {
@@ -51,7 +63,7 @@ server {
 		location /hydra {
 		auth_basic "Restricted";
                 auth_basic_user_file /config/nginx/.htpasswd;
-                proxy_pass http://172.18.0.6:5075;
+                proxy_pass http://172.18.0.8:5075;
                 include /config/nginx/proxy.conf;
         }
 
@@ -61,7 +73,7 @@ ssl_session_timeout 10m;
 
 #Upstream to Plex
 upstream plex_backend {
-    server 172.18.0.7:32400;
+    server 172.18.0.9:32400;
     keepalive 32;
 }
 
