@@ -127,6 +127,12 @@ docker create \
 plexinc/pms-docker
 echo "- Complete"
 
+# WatchTower Container
+docker create \
+--name watchtower \
+-v /var/run/docker.sock:/var/run/docker.sock \
+v2tec/watchtower --cleanup
+
 # Configure Dockers and Proxy
 echo "Configuring Containers"
 # Start dockers to build configuration files
@@ -145,6 +151,8 @@ sleep 5
 docker start hydra
 sleep 5
 docker start plex
+sleep 5
+docker start watchtower
 sleep 5
 
 # Configure Lets Encrypt
