@@ -24,7 +24,9 @@ mkdir /home/USERNAME/Mount/Plex/Media
 mkdir /home/USERNAME/Downloads
 mkdir /home/USERNAME/Plex
 mkdir /home/USERNAME/Sonarr
+mkdir /home/USERNAME/4kSonarr
 mkdir /home/USERNAME/Radarr
+mkdir /home/USERNAME/4kRadarr
 mkdir /home/USERNAME/Nzbget
 mkdir /home/USERNAME/Nzbget/completed
 mkdir /home/USERNAME/NzbHydra
