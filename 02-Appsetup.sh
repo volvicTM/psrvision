@@ -21,6 +21,9 @@ mkdir /home/USERNAME/Mount/4kSonarr/gdrive
 mkdir /home/USERNAME/Mount/4kSonarr/Media
 mkdir /home/USERNAME/Mount/Plex
 mkdir /home/USERNAME/Mount/Plex/Media
+mkdir /home/USERNAME/Mount/Plex/Media/4k
+mkdir /home/USERNAME/Mount/Plex/Media/Movies
+mkdir /home/USERNAME/Mount/Plex/Media/"TV Shows"
 mkdir /home/USERNAME/Downloads
 mkdir /home/USERNAME/Plex
 mkdir /home/USERNAME/Sonarr
@@ -38,6 +41,8 @@ echo "- Complete"
 echo "Creating Scripts"
 cp -r /home/USERNAME/psrvision/Scripts /home/USERNAME/Scripts
 mkdir /home/USERNAME/Scripts/logs
+mkdir /home/USERNAME/Scripts/logs/rclone
+mkdir /home/USERNAME/Scripts/logs/plexdrive
 
 # Install necessary Applications
 echo "Installing Apps"
