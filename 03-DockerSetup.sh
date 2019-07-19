@@ -186,9 +186,9 @@ docker restart 4kradarr
 sleep 5
 
 # Configure Hydra
-sed -i~ -e 's="urlBase": null,="urlBase": "/hydra",=g' /home/USERNAME/Apps/NzbHydra/hydra/settings.cfg
-docker restart hydra
-sleep 5
+#sed -i~ -e 's="urlBase": null,="urlBase": "/hydra",=g' /home/USERNAME/Apps/NzbHydra/hydra/settings.cfg
+#docker restart hydra
+#sleep 5
 
 # Configure Nzbget
 sed -i 's/ControlUsername=nzbget/ControlUsername=/' /home/USERNAME/Apps/Nzbget/nzbget.conf
