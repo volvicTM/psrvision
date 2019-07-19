@@ -25,15 +25,15 @@ mkdir /home/USERNAME/Mount/Plex/Media/4k
 mkdir /home/USERNAME/Mount/Plex/Media/Movies
 mkdir /home/USERNAME/Mount/Plex/Media/"TV Shows"
 mkdir /home/USERNAME/Downloads
-mkdir /home/USERNAME/Plex
-mkdir /home/USERNAME/Sonarr
-mkdir /home/USERNAME/4kSonarr
-mkdir /home/USERNAME/Radarr
-mkdir /home/USERNAME/4kRadarr
-mkdir /home/USERNAME/Nzbget
-mkdir /home/USERNAME/Nzbget/completed
-mkdir /home/USERNAME/NzbHydra
-mkdir /home/USERNAME/Proxy
+mkdir /home/USERNAME/Apps/Plex
+mkdir /home/USERNAME/Apps/Sonarr
+mkdir /home/USERNAME/Apps/4kSonarr
+mkdir /home/USERNAME/Apps/Radarr
+mkdir /home/USERNAME/Apps/4kRadarr
+mkdir /home/USERNAME/Apps/Nzbget
+mkdir /home/USERNAME/Apps/Nzbget/completed
+mkdir /home/USERNAME/Apps/NzbHydra
+mkdir /home/USERNAME/Apps/Proxy
 mkdir /home/USERNAME/.config
 mkdir /home/USERNAME/.config/rclone
 echo "- Complete"
