@@ -24,6 +24,18 @@ docker create \
 -e TZ=Europe/London \
 linuxserver/letsencrypt
 
+# NZBGet Container
+docker create \
+--name nzbget \
+--network=isolated \
+--ip=172.18.0.3 \
+-e PUID=USERUID -e PGID=USERGID \
+-e TZ=Europe/London \
+-v /home/USERNAME/Apps/Nzbget:/config \
+-v /home/USERNAME/Apps/Nzbget:/downloads \
+-v /home/USERNAME/Scripts:/Scripts \
+linuxserver/nzbget
+
 # Sonarr Container
 docker create \
 --name sonarr \
@@ -88,29 +100,18 @@ docker create \
 -e PGID=USERGID -e PUID=USERUID \
 linuxserver/radarr
 
-# NZBGet Container
-docker create \
---name nzbget \
---network=isolated \
---ip=172.18.0.3 \
--e PUID=USERUID -e PGID=USERGID \
--e TZ=Europe/London \
--v /home/USERNAME/Apps/Nzbget:/config \
--v /home/USERNAME/Apps/Nzbget:/downloads \
--v /home/USERNAME/Scripts:/Scripts \
-linuxserver/nzbget
-
-# NZBHydra Container
+# NZBHydra 2 Container
 docker create \
 --name=hydra \
 --network=isolated \
 --ip=172.18.0.8 \
+-e PUID=USERUID -e PGID=USERGID \
+-e TZ=Europe/London \
 -v /home/USERNAME/Apps/NzbHydra:/config \
 -v /home/USERNAME/Apps/Nzbget:/downloads \
--v /home/USERNAME/Scripts:/Scripts \
--e PGID=USERGID -e PUID=USERUID \
--e TZ=Europe/London \
-linuxserver/hydra
+-v /home/USERNAME/Scripts:/Scripts \ 
+--restart unless-stopped \
+linuxserver/hydra2
 
 # Plex Container
 docker create \
