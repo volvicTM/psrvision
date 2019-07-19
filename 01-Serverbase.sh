@@ -40,6 +40,7 @@ echo "- Complete"
 # Secure SSH Login
 echo "Securing Ubuntu"
 sed -i 's/Port 22/Port 2245/' /etc/ssh/sshd_config
+sed -i 's/#Port 2245/Port 2245/' /etc/ssh/sshd_config
 sed -i 's/PermitRootLogin .*/PermitRootLogin no/g' /etc/ssh/sshd_config
 sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
 sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
