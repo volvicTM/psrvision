@@ -15,7 +15,7 @@ docker create \
 --name=letsencrypt \
 --network=isolated \
 --ip=172.18.0.2 \
--v /home/USERNAME/Proxy:/config \
+-v /home/USERNAME/Apps/Proxy:/config \
 -e PGID=USERGID -e PUID=USERUID  \
 -e EMAIL=USEREMAIL \
 -e URL=USERURL \
@@ -32,9 +32,9 @@ docker create \
 -e PUID=USERUID -e PGID=USERGID \
 -e TZ=Europe/London \
 -v /etc/localtime:/etc/localtime:ro \
--v /home/USERNAME/Sonarr:/config \
+-v /home/USERNAME/Apps/Sonarr:/config \
 -v /home/USERNAME/Mount/Sonarr:/tv \
--v /home/USERNAME/Nzbget:/downloads \
+-v /home/USERNAME/Apps/Nzbget:/downloads \
 -v /usr/local/sbin/rclone:/rclone \
 -v /home/USERNAME/.config/rclone:/rcloneconf \
 -v /home/USERNAME/Scripts:/Scripts \
@@ -48,9 +48,9 @@ docker create \
 -e PUID=USERUID -e PGID=USERGID \
 -e TZ=Europe/London \
 -v /etc/localtime:/etc/localtime:ro \
--v /home/USERNAME/4kSonarr:/config \
+-v /home/USERNAME/Apps/4kSonarr:/config \
 -v /home/USERNAME/Mount/4kSonarr:/tv \
--v /home/USERNAME/Nzbget:/downloads \
+-v /home/USERNAME/Apps/Nzbget:/downloads \
 -v /usr/local/sbin/rclone:/rclone \
 -v /home/USERNAME/.config/rclone:/rcloneconf \
 -v /home/USERNAME/Scripts:/Scripts \
@@ -61,8 +61,8 @@ docker create \
 --name=radarr \
 --network=isolated \
 --ip=172.18.0.6 \
--v /home/USERNAME/Radarr:/config \
--v /home/USERNAME/Nzbget:/downloads \
+-v /home/USERNAME/Apps/Radarr:/config \
+-v /home/USERNAME/Apps/Nzbget:/downloads \
 -v /home/USERNAME/Mount/Radarr:/movies \
 -v /usr/local/sbin/rclone:/rclone \
 -v /home/USERNAME/.config/rclone:/rcloneconf \
@@ -77,8 +77,8 @@ docker create \
 --name=4kradarr \
 --network=isolated \
 --ip=172.18.0.7 \
--v /home/USERNAME/4kRadarr:/config \
--v /home/USERNAME/Nzbget:/downloads \
+-v /home/USERNAME/Apps/4kRadarr:/config \
+-v /home/USERNAME/Apps/Nzbget:/downloads \
 -v /home/USERNAME/Mount/4kRadarr:/movies \
 -v /usr/local/sbin/rclone:/rclone \
 -v /home/USERNAME/.config/rclone:/rcloneconf \
@@ -95,8 +95,8 @@ docker create \
 --ip=172.18.0.3 \
 -e PUID=USERUID -e PGID=USERGID \
 -e TZ=Europe/London \
--v /home/USERNAME/Nzbget:/config \
--v /home/USERNAME/Nzbget:/downloads \
+-v /home/USERNAME/Apps/Nzbget:/config \
+-v /home/USERNAME/Apps/Nzbget:/downloads \
 -v /home/USERNAME/Scripts:/Scripts \
 linuxserver/nzbget
 
@@ -105,8 +105,8 @@ docker create \
 --name=hydra \
 --network=isolated \
 --ip=172.18.0.8 \
--v /home/USERNAME/NzbHydra:/config \
--v /home/USERNAME/Nzbget:/downloads \
+-v /home/USERNAME/Apps/NzbHydra:/config \
+-v /home/USERNAME/Apps/Nzbget:/downloads \
 -v /home/USERNAME/Scripts:/Scripts \
 -e PGID=USERGID -e PUID=USERUID \
 -e TZ=Europe/London \
@@ -121,8 +121,8 @@ docker create \
 -e PLEX_UID=USERUID -e PLEX_GID=USERGID \
 -e TZ=Europe/London \
 -e PLEX_CLAIM="USERPCLAIM" \
--v /home/USERNAME/Plex:/config \
--v /home/USERNAME/Plex:/transcode \
+-v /home/USERNAME/Apps/Plex:/config \
+-v /home/USERNAME/Apps/Plex:/transcode \
 -v /home/USERNAME/Mount/Plex/Media:/data \
 -v /home/USERNAME/Scripts:/Scripts \
 plexinc/pms-docker
@@ -159,39 +159,39 @@ sleep 5
 # Configure Lets Encrypt
 echo "Please enter password to access restricted sites (sonarr, radarr, nzbget and hydra)"
 docker exec -it letsencrypt htpasswd -c /config/nginx/.htpasswd USERBASICAUTH
-sudo rm /home/USERNAME/Proxy/nginx/site-confs/default
-sudo cp /home/USERNAME/psrvision/Scripts/default /home/USERNAME/Proxy/nginx/site-confs/default
+sudo rm /home/USERNAME/Apps/Proxy/nginx/site-confs/default
+sudo cp /home/USERNAME/psrvision/Scripts/default /home/USERNAME/Apps/Proxy/nginx/site-confs/default
 docker restart letsencrypt
 sleep 5
 
 # Configure Sonarr
-sed -i~ -e 's=<UrlBase></UrlBase>=<UrlBase>/tv</UrlBase>=g' /home/USERNAME/Sonarr/config.xml
+sed -i~ -e 's=<UrlBase></UrlBase>=<UrlBase>/tv</UrlBase>=g' /home/USERNAME/Apps/Sonarr/config.xml
 docker restart sonarr
 sleep 5
 
 # Configure 4kSonarr
-sed -i~ -e 's=<UrlBase></UrlBase>=<UrlBase>/4ktv</UrlBase>=g' /home/USERNAME/4kSonarr/config.xml
+sed -i~ -e 's=<UrlBase></UrlBase>=<UrlBase>/4ktv</UrlBase>=g' /home/USERNAME/Apps/4kSonarr/config.xml
 docker restart 4ksonarr
 sleep 5
 
 # Configure Radarr
-sed -i~ -e 's=<UrlBase></UrlBase>=<UrlBase>/film</UrlBase>=g' /home/USERNAME/Radarr/config.xml
+sed -i~ -e 's=<UrlBase></UrlBase>=<UrlBase>/film</UrlBase>=g' /home/USERNAME/Apps/Radarr/config.xml
 docker restart radarr
 sleep 5
 
 # Configure 4kRadarr
-sed -i~ -e 's=<UrlBase></UrlBase>=<UrlBase>/4kfilm</UrlBase>=g' /home/USERNAME/4kRadarr/config.xml
+sed -i~ -e 's=<UrlBase></UrlBase>=<UrlBase>/4kfilm</UrlBase>=g' /home/USERNAME/Apps/4kRadarr/config.xml
 docker restart 4kradarr
 sleep 5
 
 # Configure Hydra
-sed -i~ -e 's="urlBase": null,="urlBase": "/hydra",=g' /home/USERNAME/NzbHydra/hydra/settings.cfg
+sed -i~ -e 's="urlBase": null,="urlBase": "/hydra",=g' /home/USERNAME/Apps/NzbHydra/hydra/settings.cfg
 docker restart hydra
 sleep 5
 
 # Configure Nzbget
-sed -i 's/ControlUsername=nzbget/ControlUsername=/' /home/USERNAME/Nzbget/nzbget.conf
-sed -i 's/ControlPassword=tegbzn6789/ControlPassword=/' /home/USERNAME/Nzbget/nzbget.conf
+sed -i 's/ControlUsername=nzbget/ControlUsername=/' /home/USERNAME/Apps/Nzbget/nzbget.conf
+sed -i 's/ControlPassword=tegbzn6789/ControlPassword=/' /home/USERNAME/Apps/Nzbget/nzbget.conf
 docker restart nzbget
 
 docker stop $(docker ps -a -q)
